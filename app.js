@@ -5,14 +5,20 @@
  * IMPORTANT: the FFmpeg wrapper library is loaded with a DYNAMIC import (not a
  * static top-level import) so that a blocked/slow CDN can never kill the whole
  * UI — buttons stay wired, and encoder-load failures surface as a clear message.
- * The heavy encoder core (~31 MB) is self-hosted in /vendor/ (local first),
- * with CDN fallbacks. Cloudflare Pages caps deployed files at 25 MiB, so the
- * wasm ships as two parts and is reassembled in-memory via a Blob URL
- * (fetchable from the FFmpeg worker); if that ever fails we fall back to CDN.
+ * The wrapper AND the heavy encoder core (~31 MB) are self-hosted in /vendor/
+ * (local first), with CDN fallbacks. Self-hosting the wrapper matters: the
+ * wrapper spawns its worker from its own URL, and relative coreURL/wasmURL
+ * resolve against the worker script — a CDN-hosted worker would resolve
+ * '/vendor/…' against the CDN origin (404). Same-origin worker + Blob-URL wasm
+ * keeps everything working with zero CDN dependency.
+ * Cloudflare Pages caps deployed files at 25 MiB, so the wasm ships as two
+ * parts and is reassembled in-memory via a Blob URL (fetchable from the worker);
+ * if that ever fails we fall back to CDN.
  * window.__vidsizerCoreSource reports which core actually loaded
  * ('self-hosted' | 'cdn'). */
 const CORE_VERSION = '0.12.10';
 const LIB_URLS = [
+  '/vendor/lib/index.js', // self-hosted wrapper — same-origin worker
   `https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@${CORE_VERSION}/+esm`,
   `https://esm.sh/@ffmpeg/ffmpeg@${CORE_VERSION}`,
 ];
@@ -349,7 +355,8 @@ async function compress() {
     if (/memory|allocation|abort/i.test(msg)) {
       showError('The browser ran out of memory encoding this video. Try a shorter clip, a lower target size, or a desktop browser with more RAM.');
     } else if (/load|fetch|network|failed/i.test(msg)) {
-      showError('Couldn\'t load the video encoder (network issue?). Check your connection and click Compress again — the encoder is cached after the first load.');
+      showError('Couldn\'t load the video encoder. Check your connection and click Compress again — the encoder is cached after the first load.' +
+        (msg ? ' (detail: ' + msg.slice(0, 160) + ')' : ''));
     } else {
       showError('Encoding failed on this file. It may use an unusual codec — try exporting it as MP4 (H.264) first, then compress again.');
     }
