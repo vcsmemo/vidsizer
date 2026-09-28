@@ -1,6 +1,7 @@
 /* VidSizer — shared browser-side video compression engine.
- * 100% client-side: @ffmpeg/ffmpeg (single-threaded core, no COOP/COEP headers needed).
- * No build step. Loaded as an ES module on every tool page.
+ * 100% client-side: @ffmpeg/ffmpeg with a multi-threaded core when the page
+ * is cross-origin isolated (see _headers: COOP + COEP), single-threaded
+ * fallback otherwise. No build step. Loaded as an ES module on every tool page.
  *
  * IMPORTANT: the FFmpeg wrapper library is loaded with a DYNAMIC import (not a
  * static top-level import) so that a blocked/slow CDN can never kill the whole
@@ -15,7 +16,8 @@
  * parts and is reassembled in-memory via a Blob URL (fetchable from the worker);
  * if that ever fails we fall back to CDN.
  * window.__vidsizerCoreSource reports which core actually loaded
- * ('self-hosted' | 'cdn'). */
+ * ('self-hosted-mt' | 'self-hosted-st' | 'cdn'), and window.__vidsizerThreads
+ * reports 'mt' or 'st'. */
 const CORE_VERSION = '0.12.10';
 const LIB_URLS = [
   '/vendor/lib/index.js', // self-hosted wrapper — same-origin worker
@@ -26,6 +28,16 @@ const WASM_PARTS = [
   '/vendor/ffmpeg-core.wasm.part00',
   '/vendor/ffmpeg-core.wasm.part01',
 ];
+// Multi-threaded core (@ffmpeg/core-mt): same split treatment, ~31 MiB.
+const WASM_PARTS_MT = [
+  '/vendor/ffmpeg-core-mt.wasm.part00',
+  '/vendor/ffmpeg-core-mt.wasm.part01',
+];
+// SharedArrayBuffer (needed by the MT core) only exists in a
+// cross-origin-isolated page — enabled via the _headers file
+// (COOP: same-origin + COEP: credentialless). Where isolation is off
+// (older browsers), we transparently fall back to the single-threaded core.
+const MT_OK = typeof crossOriginIsolated !== 'undefined' && crossOriginIsolated === true;
 const CORE_BASES = [
   `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
   `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
@@ -293,11 +305,11 @@ function nextPresetAbove(t) {
   return null;
 }
 
-// Pages limits deployed files to 25 MiB, so the ~31 MiB wasm core is stored
+// Pages limits deployed files to 25 MiB, so the ~31 MiB wasm cores are stored
 // as two parts and reassembled here into a Blob URL, which the FFmpeg worker
 // can fetch like any normal URL.
-async function assembleSelfHostedWasmURL() {
-  const bufs = await Promise.all(WASM_PARTS.map(async (p) => {
+async function assembleSelfHostedWasmURL(parts) {
+  const bufs = await Promise.all(parts.map(async (p) => {
     const r = await fetch(p);
     if (!r.ok) throw new Error('wasm-part-missing: ' + p);
     return r.arrayBuffer();
@@ -311,24 +323,48 @@ function ensureFFmpeg() {
   ffmpegLoading = (async () => {
     await loadFFmpegLib();
     let lastErr = null;
-    // 1) self-hosted split core — no CDN dependency
+    // 1) self-hosted MULTI-THREADED core (needs crossOriginIsolated) —
+    //    typically several times faster than single-threaded.
+    if (MT_OK) {
+      let blobURL = null;
+      try {
+        const inst = new FFmpegCtor();
+        inst.on('log', () => {});
+        blobURL = await assembleSelfHostedWasmURL(WASM_PARTS_MT);
+        await inst.load({
+          coreURL: '/vendor/ffmpeg-core-mt.js',
+          wasmURL: blobURL,
+          // workerURL defaults to /vendor/ffmpeg-core-mt.worker.js
+          // (derived from coreURL by the wrapper) — the pthread bootstrap.
+        });
+        ffmpeg = inst;
+        window.__vidsizerCoreSource = 'self-hosted-mt';
+        window.__vidsizerThreads = 'mt';
+        return inst;
+      } catch (e) {
+        lastErr = e;
+        if (blobURL) URL.revokeObjectURL(blobURL);
+      }
+    }
+    // 2) self-hosted single-threaded core — no CDN dependency
     let blobURL = null;
     try {
       const inst = new FFmpegCtor();
       inst.on('log', () => {});
-      blobURL = await assembleSelfHostedWasmURL();
+      blobURL = await assembleSelfHostedWasmURL(WASM_PARTS);
       await inst.load({
         coreURL: '/vendor/ffmpeg-core.js',
         wasmURL: blobURL,
       });
       ffmpeg = inst;
-      window.__vidsizerCoreSource = 'self-hosted';
+      window.__vidsizerCoreSource = 'self-hosted-st';
+      window.__vidsizerThreads = 'st';
       return inst;
     } catch (e) {
       lastErr = e;
       if (blobURL) URL.revokeObjectURL(blobURL);
     }
-    // 2) CDN fallbacks (full single-file core)
+    // 3) CDN fallbacks (full single-file core)
     for (const base of CORE_BASES) {
       try {
         const inst = new FFmpegCtor();
@@ -339,6 +375,7 @@ function ensureFFmpeg() {
         });
         ffmpeg = inst;
         window.__vidsizerCoreSource = 'cdn';
+        window.__vidsizerThreads = 'st';
         return inst;
       } catch (e) { lastErr = e; }
     }
