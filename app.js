@@ -17,7 +17,8 @@
  * if that ever fails we fall back to CDN.
  * window.__vidsizerCoreSource reports which core actually loaded
  * ('self-hosted-mt' | 'self-hosted-st' | 'cdn'), and window.__vidsizerThreads
- * reports 'mt' or 'st'. */
+ * reports 'mt' or 'st'. The MT core is opt-in via ?mt=1 (still under
+ * validation); single-threaded is the default. */
 const CORE_VERSION = '0.12.10';
 const LIB_URLS = [
   '/vendor/lib/index.js', // self-hosted wrapper — same-origin worker
@@ -38,6 +39,11 @@ const WASM_PARTS_MT = [
 // (COOP: same-origin + COEP: credentialless). Where isolation is off
 // (older browsers), we transparently fall back to the single-threaded core.
 const MT_OK = typeof crossOriginIsolated !== 'undefined' && crossOriginIsolated === true;
+// Multi-threaded core is opt-in via ?mt=1 while we validate it: it hung in our
+// test browser, so the proven single-threaded core stays the default.
+const MT_WANTED = new URLSearchParams(location.search).get('mt') === '1';
+const USE_MT = MT_OK && MT_WANTED;
+let mtActive = false;
 const CORE_BASES = [
   `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
   `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
@@ -297,6 +303,8 @@ function updateEstimate() {
   // Large-file heads-up: in-browser encoding of several hundred MB is slow
   // and can exhaust memory on phones.
   $('bigFileNote').hidden = file.size <= 200 * 1024 * 1024;
+  // Keep the button caption in sync with the chosen target (incl. Custom).
+  $('compressBtn').textContent = 'Compress to ' + targetMB + ' MB';
 }
 
 function nextPresetAbove(t) {
@@ -323,9 +331,9 @@ function ensureFFmpeg() {
   ffmpegLoading = (async () => {
     await loadFFmpegLib();
     let lastErr = null;
-    // 1) self-hosted MULTI-THREADED core (needs crossOriginIsolated) —
-    //    typically several times faster than single-threaded.
-    if (MT_OK) {
+    // 1) self-hosted MULTI-THREADED core (opt-in via ?mt=1 + crossOriginIsolated)
+    //    — under validation; default stays single-threaded.
+    if (USE_MT) {
       let blobURL = null;
       try {
         const inst = new FFmpegCtor();
@@ -340,6 +348,7 @@ function ensureFFmpeg() {
         ffmpeg = inst;
         window.__vidsizerCoreSource = 'self-hosted-mt';
         window.__vidsizerThreads = 'mt';
+        mtActive = true;
         return inst;
       } catch (e) {
         lastErr = e;
@@ -390,6 +399,12 @@ function buildArgs(inName, outName, plan) {
     '-b:v', videoBrK + 'k',
     '-maxrate', Math.round(videoBrK * 1.5) + 'k',
     '-bufsize', Math.round(videoBrK * 2) + 'k'];
+  if (mtActive) {
+    // Cap x264 threads: beyond ~8 there's little gain, and too many threads
+    // can starve weak machines.
+    const cores = (typeof navigator !== 'undefined' && navigator.hardwareConcurrency) || 4;
+    args.push('-threads', String(Math.max(2, Math.min(8, cores))));
+  }
   const srcH = vidHeight || plan.outH;
   if (plan.outH < srcH) args.push('-vf', 'scale=-2:' + plan.outH);
   args.push('-preset', 'veryfast', '-c:a', 'aac', '-b:a', Math.round(plan.audioBr / 1000) + 'k',
@@ -452,7 +467,8 @@ async function compress() {
     let outData = null;
     let attempt;
     for (attempt = 1; attempt <= 2; attempt++) {
-      $('attemptText').textContent = 'Pass ' + attempt + ' of up to 2 — targeting under ' + targetMB + ' MB';
+      $('attemptText').textContent = 'Pass ' + attempt + ' of up to 2 — targeting under ' + targetMB + ' MB' +
+        (mtActive ? ' · multi-threaded' : '');
       setProgress(3, 'Compressing…');
       await inst.exec(buildArgs(inName, outName, { ...plan, videoBr }));
       outData = await inst.readFile(outName);
