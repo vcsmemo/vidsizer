@@ -155,6 +155,17 @@ function init() {
   });
   $('customMB').addEventListener('input', readCustom);
 
+  // If the page preset isn't one of the chips (e.g. /compress-video-to-8mb/),
+  // default to the Custom chip prefilled with the page's target size.
+  if (!chips.some((c) => c.classList.contains('active'))) {
+    const customChip = $('customChip');
+    if (customChip && targetMB > 0) {
+      customChip.classList.add('active');
+      $('customRow').hidden = false;
+      $('customMB').value = targetMB;
+    }
+  }
+
   $('compressBtn').addEventListener('click', compress);
 }
 
