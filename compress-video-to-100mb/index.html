@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compress Video to 100MB — Exact Size, Free, In Your Browser</title>
+<meta name="description" content="Compress any video to exactly 100MB in your browser. The in-between target: room for long clips, under most upload caps. No upload, no signup.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-to-100mb/">
+<meta property="og:title" content="Compress video to 100MB — exact, free, private">
+<meta property="og:description" content="Set 100MB, get a video back just under 100MB. Free, in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsizer.com/compress-video-to-100mb/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do I compress a video to exactly 100 MB?","acceptedAnswer":{"@type":"Answer","text":"Select the 100 MB target above and hit Compress. VidSizer measures your clip's duration, computes the precise bitrate, and re-encodes once more until the output is provably under 100 MB."}},
+{"@type":"Question","name":"What quality will a 100 MB video have?","acceptedAnswer":{"@type":"Answer","text":"Plenty of headroom: several minutes at crisp 720p, or shorter clips at full 1080p. The tool shows its planned output (resolution and bitrate) before you encode."}},
+{"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
+]}
+</script>
+</head>
+<body data-preset="100">
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Vid<span>Sizer</span></a>
+    <div class="nav-links">
+      <a href="/discord-video-compressor/">Discord</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-telegram/">Telegram</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/discord-video-size-limit/">Size limits</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
+    <h1>Compress video to 100 MB</h1>
+    <p class="lede">The in-between target: too big for email, comfortably under most upload caps — and roomy enough for <strong>long clips at real quality</strong>. Drop your video in, get back a file guaranteed just under 100 MB.</p>
+  </section>
+
+  <section class="tool" id="tool" data-preset="100" aria-label="Compress video to 100MB tool">
+    <div class="tool-card">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
+        <input type="file" id="fileInput" accept="video/*" hidden>
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="drop-title">Drop your video here</p>
+        <p class="drop-sub">or <button type="button" class="link-btn" id="browseBtn">browse files</button></p>
+        <p class="drop-note">MP4, MOV, WebM&hellip; &mdash; processed 100% on your device</p>
+      </div>
+      <div class="file-info" id="fileInfo" hidden>
+        <div class="file-row"><span id="fileName"></span><button class="remove-btn" id="removeFile" aria-label="Remove file">&times;</button></div>
+        <div class="file-meta"><span id="metaDuration"></span> &middot; <span id="metaDims"></span> &middot; <span id="metaSize"></span></div>
+      </div>
+      <div class="presets">
+        <p class="presets-label">Target size</p>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" data-target="20">Discord &middot; 20 MB</button>
+          <button type="button" class="chip" data-target="50">Nitro Basic &middot; 50 MB</button>
+          <button type="button" class="chip" data-target="500">Nitro &middot; 500 MB</button>
+          <button type="button" class="chip" data-target="16">WhatsApp &middot; 16 MB</button>
+          <button type="button" class="chip" data-target="25">Gmail &middot; 25 MB</button>
+          <button type="button" class="chip" id="customChip">Custom&hellip;</button>
+        </div>
+        <div class="custom-row" id="customRow" hidden>
+          <input type="number" id="customMB" min="1" max="2000" placeholder="35" inputmode="numeric" aria-label="Custom target size in MB"> <span>MB</span>
+        </div>
+      </div>
+      <div class="estimate" id="estimate" hidden>
+        Original: <b id="estOrig"></b> &rarr; Estimated output: <b id="estOut"></b>
+        <span style="color:var(--muted);font-size:.85rem">(6% safety margin keeps you under the limit)</span><br>
+        <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
+        <p class="warn" id="qualityWarn" hidden></p>
+      </div>
+      <button class="cta" id="compressBtn" disabled>Compress to 100 MB</button>
+      <div class="progress" id="progressWrap" hidden>
+        <div class="bar"><div id="progressBar"></div></div>
+        <p id="progressText">Loading encoder&hellip;</p>
+        <p id="attemptText"></p>
+      </div>
+      <div class="result" id="result" hidden>
+        <p class="money">Original: <b id="resOrig"></b> &rarr; Output: <b id="resOut"></b><br><span class="under">&#10003; under your <span id="resTarget"></span> MB limit</span></p>
+        <a class="cta" id="downloadBtn" href="#" download>Download video</a><br>
+        <button class="ghost" id="againBtn">Compress another</button>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <p class="privacy">&#128274; Your video never leaves your device. No upload, no signup, no watermark.</p>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <h2>When 100 MB is the right target</h2>
+    <p>20 MB is perfect for a 30-second Discord clip — but squeeze a 10-minute recording into 20 MB and the math turns brutal. 100 MB gives you <strong>5&times; the bitrate budget</strong>: a 10-minute video at 100 MB holds clean 720p where 20 MB would force mushy 360p.</p>
+    <p>It's also the sweet spot under caps that sit above email limits: course uploads, portfolio sites, and sharing services that accept &ldquo;up to 100 MB&rdquo;. Set it, get a verified file back, move on.</p>
+    <p>Need a different target? <a href="/compress-video-to-50mb/">Compress to 50 MB</a> &middot; <a href="/compress-video-to-500mb/">Compress to 500 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
+  </section>
+
+  <section class="section">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>How do I compress a video to exactly 100 MB?</summary><p>Select the 100 MB target above and hit Compress. VidSizer measures your clip's duration, computes the precise bitrate, and re-encodes once more until the output is provably under 100 MB.</p></details>
+    <details class="faq"><summary>What quality will a 100 MB video have?</summary><p>Plenty of headroom: several minutes at crisp 720p, or shorter clips at full 1080p. The tool shows its planned output (resolution and bitrate) before you encode.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/discord-video-compressor/">Discord video compressor</a>
+      <a href="/compress-video-for-discord/">Compress video for Discord</a>
+      <a href="/discord-video-size-limit/">Discord video size limit</a>
+      <a href="/compress-video-to-8mb/">8 MB</a>
+      <a href="/compress-video-to-10mb/">10 MB</a>
+      <a href="/compress-video-to-20mb/">20 MB</a>
+      <a href="/compress-video-to-50mb/">50 MB</a>
+      <a href="/compress-video-to-100mb/">100 MB</a>
+      <a href="/compress-video-to-500mb/">500 MB</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/compress-video-for-telegram/">Telegram</a>
+      <a href="/compress-video-for-iphone/">iPhone</a>
+      <a href="/compress-video-for-android/">Android</a>
+    </nav>
+    <p>VidSizer &mdash; compress any video to any exact size, free, in your browser. Your videos never leave your device.</p>
+  </div>
+</footer>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
