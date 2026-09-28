@@ -253,9 +253,13 @@ function updateEstimate() {
   if (!file || !durationSec) return;
   const plan = computePlan();
   $('estOrig').textContent = fmtMB(file.size);
+  const alreadyUnder = file.size <= plan.targetBytes;
   if (plan.impossible) {
     $('estOut').textContent = '—';
     $('estPlan').textContent = '';
+  } else if (alreadyUnder) {
+    $('estOut').textContent = fmtMB(file.size);
+    $('estPlan').textContent = 'already under target — no re-encode needed';
   } else {
     $('estOut').textContent = '≈ ' + (targetMB * SAFETY_MARGIN).toFixed(1) + ' MB';
     $('estPlan').textContent = plan.outH + 'p · ' + (plan.videoBr / 1e6).toFixed(1) +
@@ -267,6 +271,8 @@ function updateEstimate() {
   if (plan.impossible) {
     warn.hidden = false;
     warn.textContent = `⚠️ Even at minimum quality this clip needs ≈ ${plan.minMB} MB — it can't fit in ${targetMB} MB. Try a larger target or trim it shorter.`;
+  } else if (alreadyUnder) {
+    warn.hidden = true;
   } else if (plan.outH < srcH || plan.videoBr < WARN_BITRATE) {
     const nextUp = nextPresetAbove(targetMB);
     warn.hidden = false;
