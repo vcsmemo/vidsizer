@@ -78,4 +78,4 @@ COOP/COEP).
 - Some exotic codecs (e.g. HEVC in MKV on some browsers) may fail to decode —
   the UI suggests re-exporting as MP4 (H.264).
 - Discord limits are stated as "last verified September 2026" — re-check
-  periodically; the August 2026 change (free 10→20 MB) is why freshness matters here.
+  periodically; the August 2026 change (free 10→20 MB) is why freshness matters here！
