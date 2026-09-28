@@ -274,6 +274,7 @@ function updateEstimate() {
   } else if (alreadyUnder) {
     warn.hidden = true;
   } else if (plan.outH < srcH || plan.videoBr < WARN_BITRATE) {
+    warn.hidden = false;
     const nextUp = nextPresetAbove(targetMB);
     warn.hidden = false;
     warn.textContent = `⚠️ To hit ${targetMB} MB we'll output ${plan.outH}p — expect softer detail. ` +
@@ -281,6 +282,9 @@ function updateEstimate() {
   } else {
     warn.hidden = true;
   }
+  // Large-file heads-up: in-browser encoding of several hundred MB is slow
+  // and can exhaust memory on phones.
+  $('bigFileNote').hidden = file.size <= 200 * 1024 * 1024;
 }
 
 function nextPresetAbove(t) {
