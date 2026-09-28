@@ -6,14 +6,21 @@
  * static top-level import) so that a blocked/slow CDN can never kill the whole
  * UI — buttons stay wired, and encoder-load failures surface as a clear message.
  * The heavy encoder core (~31 MB) is self-hosted in /vendor/ (local first),
- * with CDN fallbacks. */
+ * with CDN fallbacks. Cloudflare Pages caps deployed files at 25 MiB, so the
+ * wasm ships as two parts and is reassembled in-memory via a Blob URL
+ * (fetchable from the FFmpeg worker); if that ever fails we fall back to CDN.
+ * window.__vidsizerCoreSource reports which core actually loaded
+ * ('self-hosted' | 'cdn'). */
 const CORE_VERSION = '0.12.10';
 const LIB_URLS = [
   `https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@${CORE_VERSION}/+esm`,
   `https://esm.sh/@ffmpeg/ffmpeg@${CORE_VERSION}`,
 ];
+const WASM_PARTS = [
+  '/vendor/ffmpeg-core.wasm.part00',
+  '/vendor/ffmpeg-core.wasm.part01',
+];
 const CORE_BASES = [
-  '/vendor', // self-hosted — no CDN dependency
   `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
   `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
 ];
@@ -207,21 +214,52 @@ function nextPresetAbove(t) {
   return null;
 }
 
+// Pages limits deployed files to 25 MiB, so the ~31 MiB wasm core is stored
+// as two parts and reassembled here into a Blob URL, which the FFmpeg worker
+// can fetch like any normal URL.
+async function assembleSelfHostedWasmURL() {
+  const bufs = await Promise.all(WASM_PARTS.map(async (p) => {
+    const r = await fetch(p);
+    if (!r.ok) throw new Error('wasm-part-missing: ' + p);
+    return r.arrayBuffer();
+  }));
+  return URL.createObjectURL(new Blob(bufs, { type: 'application/wasm' }));
+}
+
 function ensureFFmpeg() {
   if (ffmpeg) return Promise.resolve(ffmpeg);
   if (ffmpegLoading) return ffmpegLoading;
   ffmpegLoading = (async () => {
     await loadFFmpegLib();
-    const inst = new FFmpegCtor();
-    inst.on('log', () => {});
     let lastErr = null;
+    // 1) self-hosted split core — no CDN dependency
+    let blobURL = null;
+    try {
+      const inst = new FFmpegCtor();
+      inst.on('log', () => {});
+      blobURL = await assembleSelfHostedWasmURL();
+      await inst.load({
+        coreURL: '/vendor/ffmpeg-core.js',
+        wasmURL: blobURL,
+      });
+      ffmpeg = inst;
+      window.__vidsizerCoreSource = 'self-hosted';
+      return inst;
+    } catch (e) {
+      lastErr = e;
+      if (blobURL) URL.revokeObjectURL(blobURL);
+    }
+    // 2) CDN fallbacks (full single-file core)
     for (const base of CORE_BASES) {
       try {
+        const inst = new FFmpegCtor();
+        inst.on('log', () => {});
         await inst.load({
           coreURL: base + '/ffmpeg-core.js',
           wasmURL: base + '/ffmpeg-core.wasm',
         });
         ffmpeg = inst;
+        window.__vidsizerCoreSource = 'cdn';
         return inst;
       } catch (e) { lastErr = e; }
     }
