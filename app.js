@@ -51,7 +51,22 @@ let busy = false;
 // FFmpeg wrapper library is loaded lazily (dynamic import) so a blocked CDN
 // can never kill the whole UI. See LIB_URLS / CORE_BASES above.
 let FFmpegCtor = null;
-let fetchFileFn = null;
+
+// fetchFile (File/Blob/URL -> Uint8Array) lives in the separate @ffmpeg/util
+// package; it's trivial, so we implement it locally and skip that dependency.
+async function fetchFileLocal(input) {
+  if (input instanceof Uint8Array) return input;
+  if (typeof input === 'string') {
+    const r = await fetch(input);
+    if (!r.ok) throw new Error('fetch failed: ' + input);
+    return new Uint8Array(await r.arrayBuffer());
+  }
+  if (input instanceof ArrayBuffer) return new Uint8Array(input);
+  if (ArrayBuffer.isView(input)) {
+    return new Uint8Array(input.buffer, input.byteOffset, input.byteLength);
+  }
+  return new Uint8Array(await input.arrayBuffer()); // File / Blob
+}
 
 async function loadFFmpegLib() {
   if (FFmpegCtor) return;
@@ -60,8 +75,7 @@ async function loadFFmpegLib() {
     try {
       const mod = await import(/* @vite-ignore */url);
       FFmpegCtor = mod.FFmpeg;
-      fetchFileFn = mod.fetchFile;
-      if (FFmpegCtor && fetchFileFn) return;
+      if (FFmpegCtor) return;
     } catch (e) { lastErr = e; }
   }
   throw lastErr || new Error('ffmpeg-lib-load-failed');
@@ -303,7 +317,7 @@ async function compress() {
     const inName = 'input' + (/\.(mp4|mov|m4v|webm|mkv|avi)$/i.test(ext) ? ext : '.mp4');
     const outName = 'output.mp4';
 
-    await inst.writeFile(inName, await fetchFileFn(file));
+    await inst.writeFile(inName, await fetchFileLocal(file));
 
     inst.off('progress');
     inst.on('progress', ({ time }) => {
