@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compress Video on Android — No App, Free, In Chrome</title>
-<meta name="description" content="Compress video on your Android phone without installing an app. Open in Chrome, pick a video, get a smaller MP4. 100% on-device, free, no watermark.">
-<link rel="canonical" href="https://vidsizer.com/compress-video-for-android/">
-<meta property="og:title" content="Compress video on Android — no app needed">
-<meta property="og:description" content="In Chrome: pick a video, get a smaller MP4. Free, private, no install.">
+<title>Compress Video to 16MB — Exact Size, Free, In Your Browser</title>
+<meta name="description" content="Compress any video to exactly 16MB in your browser. The sweet spot for mobile sharing. Exact bitrate math, verified output. No upload, no signup.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-to-16mb/">
+<meta property="og:title" content="Compress video to 16MB — exact, free, private">
+<meta property="og:description" content="Set 16MB, get a video back just under 16MB. Free, in your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://vidsizer.com/compress-video-for-android/">
+<meta property="og:url" content="https://vidsizer.com/compress-video-to-16mb/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Does this work in Chrome on Android?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab."}},
-{"@type":"Question","name":"Where does the compressed video go?","acceptedAnswer":{"@type":"Answer","text":"Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app."}},
-{"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device."}}
+{"@type":"Question","name":"How do I compress a video to exactly 16 MB?","acceptedAnswer":{"@type":"Answer","text":"Select the 16 MB target above and hit Compress. VidSizer measures your clip's duration, computes the precise bitrate, and re-encodes once more until the output is provably under 16 MB."}},
+{"@type":"Question","name":"Why 16 MB?","acceptedAnswer":{"@type":"Answer","text":"It's the classic WhatsApp-era sweet spot: fast on mobile data, good quality for short clips. And the document-send trick preserves your exact encode end to end."}},
+{"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
 </head>
-<body data-preset="20">
+<body data-preset="16">
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="/">Vid<span>Sizer</span></a>
@@ -36,11 +36,11 @@
 <main>
   <section class="hero">
     <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
-    <h1>Compress video on Android</h1>
-    <p class="lede">Skip the ad-stuffed &ldquo;video compressor&rdquo; apps. Open this page in <strong>Chrome</strong>, pick a video, and get back a smaller MP4 — all on your device.</p>
+    <h1>Compress video to 16 MB</h1>
+    <p class="lede">16 MB is the sweet spot: small enough to fly over mobile data, big enough for good-looking short clips. Drop your video in, get back a file <strong>guaranteed just under 16 MB</strong>.</p>
   </section>
 
-  <section class="tool" id="tool" data-preset="20" aria-label="Compress video on Android tool">
+  <section class="tool" id="tool" data-preset="16" aria-label="Compress video to 16MB tool">
     <div class="tool-card">
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
         <input type="file" id="fileInput" accept="video/*" hidden>
@@ -73,7 +73,7 @@
         <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
         <p class="warn" id="qualityWarn" hidden></p>
       </div>
-      <button class="cta" id="compressBtn" disabled>Compress to 20 MB</button>
+      <button class="cta" id="compressBtn" disabled>Compress to 16 MB</button>
       <div class="progress" id="progressWrap" hidden>
         <div class="bar"><div id="progressBar"></div></div>
         <p id="progressText">Loading encoder&hellip;</p>
@@ -91,17 +91,17 @@
 
 
   <section class="section">
-    <h2>How it works on Android</h2>
-    <p>Tap <strong>browse files</strong> above and pick a video from your gallery or file manager. Choose a target size — 20 MB is a safe default for sharing — and hit Compress. The MP4 downloads straight to your <strong>Downloads</strong> folder, ready to share on WhatsApp, Telegram, or anywhere else.</p>
-    <p>One tip: keep <strong>Chrome in the foreground</strong> while it encodes, since Android can throttle background tabs. Encoding uses your phone's own CPU — that's the whole reason nothing gets uploaded.</p>
-    <p>Need a different target? <a href="/compress-video-for-iphone/">Compress on iPhone</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
+    <h2>The 16 MB trick, explained</h2>
+    <p>16 MB became famous as WhatsApp's classic target — and it stuck around because the math is genuinely good. It's small enough to send and download quickly on mobile data, yet large enough for clean-looking short clips. The pro move: compress to exactly 16 MB here, then <strong>attach the result as a document</strong> — your recipient gets the file untouched, at the quality you chose, instead of whatever the chat app's recompressor decides.</p>
+    <p>Beyond WhatsApp, 16 MB fits anywhere with a &ldquo;must be under 16 MB&rdquo; rule — and it's a kinder target than 8 MB for clips over a minute. See also <a href="/compress-video-for-whatsapp/">compress video for WhatsApp</a>.</p>
+    <p>Need a different target? <a href="/compress-video-to-8mb/">Compress to 8 MB</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-whatsapp/">Compress for WhatsApp</a></p>
   </section>
 
   <section class="section">
     <h2>FAQ</h2>
-    <details class="faq"><summary>Does this work in Chrome on Android?</summary><p>Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab.</p></details>
-    <details class="faq"><summary>Where does the compressed video go?</summary><p>Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app.</p></details>
-    <details class="faq"><summary>Is my video uploaded to a server?</summary><p>No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device.</p></details>
+    <details class="faq"><summary>How do I compress a video to exactly 16 MB?</summary><p>Select the 16 MB target above and hit Compress. VidSizer measures your clip's duration, computes the precise bitrate, and re-encodes once more until the output is provably under 16 MB.</p></details>
+    <details class="faq"><summary>Why 16 MB?</summary><p>It's the classic WhatsApp-era sweet spot: fast on mobile data, good quality for short clips. And the document-send trick preserves your exact encode end to end.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
   </section>
 </main>
 <footer class="site-footer">

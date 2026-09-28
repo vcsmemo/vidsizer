@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compress Video on Android — No App, Free, In Chrome</title>
-<meta name="description" content="Compress video on your Android phone without installing an app. Open in Chrome, pick a video, get a smaller MP4. 100% on-device, free, no watermark.">
-<link rel="canonical" href="https://vidsizer.com/compress-video-for-android/">
-<meta property="og:title" content="Compress video on Android — no app needed">
-<meta property="og:description" content="In Chrome: pick a video, get a smaller MP4. Free, private, no install.">
+<title>Compress Video for Signal — Private, On-Device, Free</title>
+<meta name="description" content="Compress video for Signal without uploading it anywhere. 100% on-device compression in your browser. Free, no signup, no watermark.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-for-signal/">
+<meta property="og:title" content="Compress video for Signal — private, on-device">
+<meta property="og:description" content="Shrink videos for Signal without uploading them anywhere. Free, in your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://vidsizer.com/compress-video-for-android/">
+<meta property="og:url" content="https://vidsizer.com/compress-video-for-signal/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Does this work in Chrome on Android?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab."}},
-{"@type":"Question","name":"Where does the compressed video go?","acceptedAnswer":{"@type":"Answer","text":"Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app."}},
-{"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device."}}
+{"@type":"Question","name":"How do I compress a video for Signal?","acceptedAnswer":{"@type":"Answer","text":"Drop your video above and hit Compress. Everything runs locally in your browser — pick any exact target size, get a verified file back, then attach it in Signal."}},
+{"@type":"Question","name":"Why does on-device matter for Signal users?","acceptedAnswer":{"@type":"Answer","text":"Server-side compressors receive a full copy of your video. With VidSizer the bytes never leave your machine, so the privacy Signal gives your messages extends to the compression step too."}},
+{"@type":"Question","name":"What size should I target for Signal?","acceptedAnswer":{"@type":"Answer","text":"20 MB is a safe default that sends quickly. If Signal still resists, step down to 10 MB or 8 MB — the tool shows its planned output before encoding."}}
 ]}
 </script>
 </head>
@@ -36,11 +36,11 @@
 <main>
   <section class="hero">
     <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
-    <h1>Compress video on Android</h1>
-    <p class="lede">Skip the ad-stuffed &ldquo;video compressor&rdquo; apps. Open this page in <strong>Chrome</strong>, pick a video, and get back a smaller MP4 — all on your device.</p>
+    <h1>Compress video for Signal</h1>
+    <p class="lede">You chose Signal for privacy — don't upload your videos to a random compressor site to shrink them. Compress <strong>100% on your device</strong>: nothing ever leaves your browser.</p>
   </section>
 
-  <section class="tool" id="tool" data-preset="20" aria-label="Compress video on Android tool">
+  <section class="tool" id="tool" data-preset="20" aria-label="Compress video for Signal tool">
     <div class="tool-card">
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
         <input type="file" id="fileInput" accept="video/*" hidden>
@@ -91,17 +91,17 @@
 
 
   <section class="section">
-    <h2>How it works on Android</h2>
-    <p>Tap <strong>browse files</strong> above and pick a video from your gallery or file manager. Choose a target size — 20 MB is a safe default for sharing — and hit Compress. The MP4 downloads straight to your <strong>Downloads</strong> folder, ready to share on WhatsApp, Telegram, or anywhere else.</p>
-    <p>One tip: keep <strong>Chrome in the foreground</strong> while it encodes, since Android can throttle background tabs. Encoding uses your phone's own CPU — that's the whole reason nothing gets uploaded.</p>
-    <p>Need a different target? <a href="/compress-video-for-iphone/">Compress on iPhone</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
+    <h2>The private way to shrink a video</h2>
+    <p>Most “compress video online” tools make you upload your footage to their servers first. If you care enough to message on Signal, that tradeoff makes no sense. VidSizer runs the encoder (FFmpeg, via WebAssembly) <strong>inside your browser tab</strong> — your video is never transmitted, stored, or seen by anyone.</p>
+    <p>Signal caps attachments well below what modern phone cameras shoot, so compression is unavoidable. Do it here, then send — the private part stays private end to end.</p>
+    <p>Need a different target? <a href="/compress-video-to-10mb/">Compress to 10 MB</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-whatsapp/">Compress for WhatsApp</a></p>
   </section>
 
   <section class="section">
     <h2>FAQ</h2>
-    <details class="faq"><summary>Does this work in Chrome on Android?</summary><p>Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab.</p></details>
-    <details class="faq"><summary>Where does the compressed video go?</summary><p>Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app.</p></details>
-    <details class="faq"><summary>Is my video uploaded to a server?</summary><p>No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device.</p></details>
+    <details class="faq"><summary>How do I compress a video for Signal?</summary><p>Drop your video above and hit Compress. Everything runs locally in your browser — pick any exact target size, get a verified file back, then attach it in Signal.</p></details>
+    <details class="faq"><summary>Why does on-device matter for Signal users?</summary><p>Server-side compressors receive a full copy of your video. With VidSizer the bytes never leave your machine, so the privacy Signal gives your messages extends to the compression step too.</p></details>
+    <details class="faq"><summary>What size should I target for Signal?</summary><p>20 MB is a safe default that sends quickly. If Signal still resists, step down to 10 MB or 8 MB — the tool shows its planned output before encoding.</p></details>
   </section>
 </main>
 <footer class="site-footer">

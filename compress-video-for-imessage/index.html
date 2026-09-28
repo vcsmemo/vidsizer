@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compress Video on Android — No App, Free, In Chrome</title>
-<meta name="description" content="Compress video on your Android phone without installing an app. Open in Chrome, pick a video, get a smaller MP4. 100% on-device, free, no watermark.">
-<link rel="canonical" href="https://vidsizer.com/compress-video-for-android/">
-<meta property="og:title" content="Compress video on Android — no app needed">
-<meta property="og:description" content="In Chrome: pick a video, get a smaller MP4. Free, private, no install.">
+<title>Compress Video for iMessage — Send Over Cellular Without Failing</title>
+<meta name="description" content="Compress video for iMessage in your browser. Pick an exact target size so big videos send instead of stalling. No upload, no signup, free.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-for-imessage/">
+<meta property="og:title" content="Compress video for iMessage — exact, free, private">
+<meta property="og:description" content="Set a target size, get a video back just under it. Free, in your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://vidsizer.com/compress-video-for-android/">
+<meta property="og:url" content="https://vidsizer.com/compress-video-for-imessage/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Does this work in Chrome on Android?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab."}},
-{"@type":"Question","name":"Where does the compressed video go?","acceptedAnswer":{"@type":"Answer","text":"Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app."}},
-{"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device."}}
+{"@type":"Question","name":"How do I compress a video for iMessage?","acceptedAnswer":{"@type":"Answer","text":"Drop your video above and hit Compress with the 20 MB target. Save the result and attach it in Messages — it sends in seconds instead of stalling."}},
+{"@type":"Question","name":"Why do my videos arrive blurry?","acceptedAnswer":{"@type":"Answer","text":"Either iMessage compressed your huge original on send, or the message fell back to MMS, where carriers enforce tiny size caps. A pre-compressed 20 MB file sidesteps both problems."}},
+{"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
 </head>
@@ -36,11 +36,11 @@
 <main>
   <section class="hero">
     <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
-    <h1>Compress video on Android</h1>
-    <p class="lede">Skip the ad-stuffed &ldquo;video compressor&rdquo; apps. Open this page in <strong>Chrome</strong>, pick a video, and get back a smaller MP4 — all on your device.</p>
+    <h1>Compress video for iMessage</h1>
+    <p class="lede">Big videos over iMessage fail, crawl, or arrive as mush — especially on cellular, and especially to green-bubble friends. Shrink to an <strong>exact size</strong> first.</p>
   </section>
 
-  <section class="tool" id="tool" data-preset="20" aria-label="Compress video on Android tool">
+  <section class="tool" id="tool" data-preset="20" aria-label="Compress video for iMessage tool">
     <div class="tool-card">
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
         <input type="file" id="fileInput" accept="video/*" hidden>
@@ -91,17 +91,17 @@
 
 
   <section class="section">
-    <h2>How it works on Android</h2>
-    <p>Tap <strong>browse files</strong> above and pick a video from your gallery or file manager. Choose a target size — 20 MB is a safe default for sharing — and hit Compress. The MP4 downloads straight to your <strong>Downloads</strong> folder, ready to share on WhatsApp, Telegram, or anywhere else.</p>
-    <p>One tip: keep <strong>Chrome in the foreground</strong> while it encodes, since Android can throttle background tabs. Encoding uses your phone's own CPU — that's the whole reason nothing gets uploaded.</p>
-    <p>Need a different target? <a href="/compress-video-for-iphone/">Compress on iPhone</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
+    <h2>Why iMessage struggles with big videos</h2>
+    <p>Blue bubbles or green, a 500 MB 4K clip is a lot to push through a messaging pipeline. iMessage compresses on send with no say from you; fall back to SMS/MMS (green bubbles) and carrier limits crush it to a postage stamp. Starting from a <strong>right-sized file</strong> — say 20 MB — means it sends fast and arrives looking like you intended.</p>
+    <p>On iPhone, do it right in Safari: no app to install, nothing uploaded. See <a href="/compress-video-for-iphone/">compress video on iPhone</a>.</p>
+    <p>Need a different target? <a href="/compress-video-for-iphone/">Compress on iPhone</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-to-50mb/">Compress to 50 MB</a></p>
   </section>
 
   <section class="section">
     <h2>FAQ</h2>
-    <details class="faq"><summary>Does this work in Chrome on Android?</summary><p>Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab.</p></details>
-    <details class="faq"><summary>Where does the compressed video go?</summary><p>Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app.</p></details>
-    <details class="faq"><summary>Is my video uploaded to a server?</summary><p>No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device.</p></details>
+    <details class="faq"><summary>How do I compress a video for iMessage?</summary><p>Drop your video above and hit Compress with the 20 MB target. Save the result and attach it in Messages — it sends in seconds instead of stalling.</p></details>
+    <details class="faq"><summary>Why do my videos arrive blurry?</summary><p>Either iMessage compressed your huge original on send, or the message fell back to MMS, where carriers enforce tiny size caps. A pre-compressed 20 MB file sidesteps both problems.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
   </section>
 </main>
 <footer class="site-footer">

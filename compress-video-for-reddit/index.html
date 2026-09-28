@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compress Video on Android — No App, Free, In Chrome</title>
-<meta name="description" content="Compress video on your Android phone without installing an app. Open in Chrome, pick a video, get a smaller MP4. 100% on-device, free, no watermark.">
-<link rel="canonical" href="https://vidsizer.com/compress-video-for-android/">
-<meta property="og:title" content="Compress video on Android — no app needed">
-<meta property="og:description" content="In Chrome: pick a video, get a smaller MP4. Free, private, no install.">
+<title>Compress Video for Reddit — Under the Cap, Fast Uploads</title>
+<meta name="description" content="Compress video for Reddit in your browser. Stay under the limits with an exact target size and skip the stalled uploads. Free, no signup.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-for-reddit/">
+<meta property="og:title" content="Compress video for Reddit — exact, free, private">
+<meta property="og:description" content="Set a target size, get a video back just under it. Free, in your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://vidsizer.com/compress-video-for-android/">
+<meta property="og:url" content="https://vidsizer.com/compress-video-for-reddit/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Does this work in Chrome on Android?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab."}},
-{"@type":"Question","name":"Where does the compressed video go?","acceptedAnswer":{"@type":"Answer","text":"Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app."}},
-{"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device."}}
+{"@type":"Question","name":"What are Reddit's video upload limits?","acceptedAnswer":{"@type":"Answer","text":"15 minutes max duration and 1 GB max file size. In practice, stay far below 1 GB — big uploads stall and Reddit transcodes everything anyway."}},
+{"@type":"Question","name":"Will Reddit recompress my video?","acceptedAnswer":{"@type":"Answer","text":"Yes, always. That's the whole argument for compressing first: control the quality yourself at 50 MB instead of uploading 800 MB and getting the same player output."}},
+{"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
 </head>
-<body data-preset="20">
+<body data-preset="50">
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="/">Vid<span>Sizer</span></a>
@@ -36,11 +36,11 @@
 <main>
   <section class="hero">
     <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
-    <h1>Compress video on Android</h1>
-    <p class="lede">Skip the ad-stuffed &ldquo;video compressor&rdquo; apps. Open this page in <strong>Chrome</strong>, pick a video, and get back a smaller MP4 — all on your device.</p>
+    <h1>Compress video for Reddit</h1>
+    <p class="lede">Reddit caps videos at 15 minutes and 1 GB — but uploading anywhere near 1 GB just stalls, then gets transcoded anyway. Compress to a sane <strong>exact size</strong> first.</p>
   </section>
 
-  <section class="tool" id="tool" data-preset="20" aria-label="Compress video on Android tool">
+  <section class="tool" id="tool" data-preset="50" aria-label="Compress video for Reddit tool">
     <div class="tool-card">
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
         <input type="file" id="fileInput" accept="video/*" hidden>
@@ -73,7 +73,7 @@
         <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
         <p class="warn" id="qualityWarn" hidden></p>
       </div>
-      <button class="cta" id="compressBtn" disabled>Compress to 20 MB</button>
+      <button class="cta" id="compressBtn" disabled>Compress to 50 MB</button>
       <div class="progress" id="progressWrap" hidden>
         <div class="bar"><div id="progressBar"></div></div>
         <p id="progressText">Loading encoder&hellip;</p>
@@ -91,17 +91,17 @@
 
 
   <section class="section">
-    <h2>How it works on Android</h2>
-    <p>Tap <strong>browse files</strong> above and pick a video from your gallery or file manager. Choose a target size — 20 MB is a safe default for sharing — and hit Compress. The MP4 downloads straight to your <strong>Downloads</strong> folder, ready to share on WhatsApp, Telegram, or anywhere else.</p>
-    <p>One tip: keep <strong>Chrome in the foreground</strong> while it encodes, since Android can throttle background tabs. Encoding uses your phone's own CPU — that's the whole reason nothing gets uploaded.</p>
-    <p>Need a different target? <a href="/compress-video-for-iphone/">Compress on iPhone</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
+    <h2>Don't upload a gigabyte to get a megabyte player</h2>
+    <p>Every video on Reddit gets re-encoded for the v.redd.it player no matter what you upload. Feeding it a 900 MB file doesn't buy you quality — it buys you a stalled upload bar. A well-encoded 50 MB file uploads in seconds and looks the same in the player.</p>
+    <p>Posting a long clip? Reddit's hard ceiling is <strong>15 minutes</strong> — trim first, then compress to your exact target here.</p>
+    <p>Need a different target? <a href="/compress-video-to-50mb/">Compress to 50 MB</a> &middot; <a href="/compress-video-to-100mb/">Compress to 100 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
   </section>
 
   <section class="section">
     <h2>FAQ</h2>
-    <details class="faq"><summary>Does this work in Chrome on Android?</summary><p>Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab.</p></details>
-    <details class="faq"><summary>Where does the compressed video go?</summary><p>Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app.</p></details>
-    <details class="faq"><summary>Is my video uploaded to a server?</summary><p>No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device.</p></details>
+    <details class="faq"><summary>What are Reddit's video upload limits?</summary><p>15 minutes max duration and 1 GB max file size. In practice, stay far below 1 GB — big uploads stall and Reddit transcodes everything anyway.</p></details>
+    <details class="faq"><summary>Will Reddit recompress my video?</summary><p>Yes, always. That's the whole argument for compressing first: control the quality yourself at 50 MB instead of uploading 800 MB and getting the same player output.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
   </section>
 </main>
 <footer class="site-footer">

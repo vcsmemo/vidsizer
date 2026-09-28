@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compress Video on Android — No App, Free, In Chrome</title>
-<meta name="description" content="Compress video on your Android phone without installing an app. Open in Chrome, pick a video, get a smaller MP4. 100% on-device, free, no watermark.">
-<link rel="canonical" href="https://vidsizer.com/compress-video-for-android/">
-<meta property="og:title" content="Compress video on Android — no app needed">
-<meta property="og:description" content="In Chrome: pick a video, get a smaller MP4. Free, private, no install.">
+<title>Compress Video to 25MB — Beat Gmail's Limit, Exact, Free</title>
+<meta name="description" content="Compress any video to exactly 25MB for Gmail attachments. Land just under the 25MB ceiling every time. In-browser, free, no signup.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-to-25mb/">
+<meta property="og:title" content="Compress video to 25MB — exact, free, private">
+<meta property="og:description" content="Set 25MB, get a video back just under 25MB. Free, in your browser.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://vidsizer.com/compress-video-for-android/">
+<meta property="og:url" content="https://vidsizer.com/compress-video-to-25mb/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Does this work in Chrome on Android?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab."}},
-{"@type":"Question","name":"Where does the compressed video go?","acceptedAnswer":{"@type":"Answer","text":"Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app."}},
-{"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device."}}
+{"@type":"Question","name":"How do I compress a video to exactly 25 MB?","acceptedAnswer":{"@type":"Answer","text":"Select the 25 MB target above and hit Compress. VidSizer measures your clip's duration, computes the precise bitrate, and re-encodes once more until the output is provably under 25 MB."}},
+{"@type":"Question","name":"Why does Gmail reject my 25 MB video?","acceptedAnswer":{"@type":"Answer","text":"The 25 MB cap counts the MIME-encoded attachment, which runs larger than the file on disk. Targeting just under — with a 6% safety margin — keeps you safely inside the real limit."}},
+{"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
 </head>
-<body data-preset="20">
+<body data-preset="25">
 <header class="site-header">
   <nav class="nav">
     <a class="brand" href="/">Vid<span>Sizer</span></a>
@@ -36,11 +36,11 @@
 <main>
   <section class="hero">
     <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
-    <h1>Compress video on Android</h1>
-    <p class="lede">Skip the ad-stuffed &ldquo;video compressor&rdquo; apps. Open this page in <strong>Chrome</strong>, pick a video, and get back a smaller MP4 — all on your device.</p>
+    <h1>Compress video to 25 MB</h1>
+    <p class="lede">25 MB is Gmail's attachment ceiling — hit 25.1 and it bounces you to a Drive link. Land <strong>just under, every time</strong>.</p>
   </section>
 
-  <section class="tool" id="tool" data-preset="20" aria-label="Compress video on Android tool">
+  <section class="tool" id="tool" data-preset="25" aria-label="Compress video to 25MB tool">
     <div class="tool-card">
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
         <input type="file" id="fileInput" accept="video/*" hidden>
@@ -73,7 +73,7 @@
         <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
         <p class="warn" id="qualityWarn" hidden></p>
       </div>
-      <button class="cta" id="compressBtn" disabled>Compress to 20 MB</button>
+      <button class="cta" id="compressBtn" disabled>Compress to 25 MB</button>
       <div class="progress" id="progressWrap" hidden>
         <div class="bar"><div id="progressBar"></div></div>
         <p id="progressText">Loading encoder&hellip;</p>
@@ -91,17 +91,17 @@
 
 
   <section class="section">
-    <h2>How it works on Android</h2>
-    <p>Tap <strong>browse files</strong> above and pick a video from your gallery or file manager. Choose a target size — 20 MB is a safe default for sharing — and hit Compress. The MP4 downloads straight to your <strong>Downloads</strong> folder, ready to share on WhatsApp, Telegram, or anywhere else.</p>
-    <p>One tip: keep <strong>Chrome in the foreground</strong> while it encodes, since Android can throttle background tabs. Encoding uses your phone's own CPU — that's the whole reason nothing gets uploaded.</p>
-    <p>Need a different target? <a href="/compress-video-for-iphone/">Compress on iPhone</a> &middot; <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-for-telegram/">Compress for Telegram</a></p>
+    <h2>Why Gmail rejects your &ldquo;25 MB&rdquo; file</h2>
+    <p>Gmail's 25 MB limit counts the <em>encoded</em> attachment, not the file on your disk — so a file that reads 25.0 MB in Finder can still tip over the line and get bounced to Drive. VidSizer targets <strong>~6% under your target</strong>, so encoding overhead never pushes you over.</p>
+    <p>The result arrives as a real attachment that plays inline — no &ldquo;view in Drive&rdquo; detour for your recipient. Also handy for any other inbox with a 25 MB cap. See <a href="/compress-video-for-gmail/">compress video for Gmail</a>.</p>
+    <p>Need a different target? <a href="/compress-video-to-20mb/">Compress to 20 MB</a> &middot; <a href="/compress-video-to-50mb/">Compress to 50 MB</a> &middot; <a href="/compress-video-for-gmail/">Compress for Gmail</a></p>
   </section>
 
   <section class="section">
     <h2>FAQ</h2>
-    <details class="faq"><summary>Does this work in Chrome on Android?</summary><p>Yes. Open this page in Chrome, tap browse files, and pick a video. No app install, no permissions beyond file access — it runs entirely in the browser tab.</p></details>
-    <details class="faq"><summary>Where does the compressed video go?</summary><p>Chrome saves the MP4 to your Downloads folder. From there you can share it to WhatsApp, Telegram, Gmail, or any other app.</p></details>
-    <details class="faq"><summary>Is my video uploaded to a server?</summary><p>No. Compression runs on your phone's own chip via WebAssembly. Your video never leaves your device.</p></details>
+    <details class="faq"><summary>How do I compress a video to exactly 25 MB?</summary><p>Select the 25 MB target above and hit Compress. VidSizer measures your clip's duration, computes the precise bitrate, and re-encodes once more until the output is provably under 25 MB.</p></details>
+    <details class="faq"><summary>Why does Gmail reject my 25 MB video?</summary><p>The 25 MB cap counts the MIME-encoded attachment, which runs larger than the file on disk. Targeting just under — with a 6% safety margin — keeps you safely inside the real limit.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
   </section>
 </main>
 <footer class="site-footer">
