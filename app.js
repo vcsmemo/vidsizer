@@ -178,7 +178,11 @@ function readCustom() {
 }
 
 function fmtMB(bytes) {
-  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  // Decimal MB everywhere (1 MB = 1,000,000 bytes): matches Chrome's download
+  // bar and macOS Finder, and guarantees the output fits platforms that
+  // enforce decimal limits. (Binary MiB would let a "100 MB" output reach
+  // 104,857,600 bytes and get rejected.)
+  return (bytes / 1e6).toFixed(1) + ' MB';
 }
 function fmtTime(sec) {
   const m = Math.floor(sec / 60);
@@ -241,7 +245,7 @@ const LADDER = [1080, 720, 480, 360];
 const COMFORT_BR = { 1080: 5000000, 720: 2200000, 480: 1000000, 360: 550000 };
 
 function computePlan() {
-  const targetBytes = Math.floor(targetMB * 1024 * 1024);
+  const targetBytes = Math.floor(targetMB * 1e6); // decimal MB, see fmtMB
   const totalBits = targetBytes * 8;
   const budgetBits = totalBits * SAFETY_MARGIN;
 
@@ -270,7 +274,7 @@ function computePlan() {
     return {
       targetBytes, videoBr: 0, audioBr, outH,
       impossible: true,
-      minMB: (minBytes / 1048576).toFixed(1),
+      minMB: (minBytes / 1e6).toFixed(1),
     };
   }
 
