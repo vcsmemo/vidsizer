@@ -275,5 +275,4 @@ details.faq p { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.96rem; }
 
 @media (max-width: 560px) {
   .tool-card { padding: 1.1rem; }
-  .nav-links { display: none; }
 }
