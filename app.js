@@ -31,9 +31,10 @@ const CORE_BASES = [
   `https://unpkg.com/@ffmpeg/core@${CORE_VERSION}/dist/esm`,
 ];
 const AUDIO_BITRATE = 128000; // 128k AAC
-const SAFETY_MARGIN = 0.96;   // keep output ~4% under target
-const MIN_VIDEO_BITRATE = 250000;
-const WARN_BITRATE = 400000;
+const SAFETY_MARGIN = 0.94;   // keep output ~6% under target
+const WARN_BITRATE = 700000;  // warn when the video bitrate plan falls below this
+const ABS_MIN_VIDEO_BR = 80000; // absolute floor — below this we fail fast, not retry
+const ABS_MIN_AUDIO_BR = 64000;
 const MAX_FILE_BYTES = 1024 * 1024 * 1024; // 1 GB — beyond this, browsers likely OOM
 
 const $ = (id) => document.getElementById(id);
@@ -202,27 +203,75 @@ function handleFile(f) {
   probe.src = objectURL;
 }
 
+// Comfortable H.264 bitrates (bps) per output height at ~30fps.
+// When the size budget can't sustain the source resolution we step down the
+// ladder — a sharp 480p beats a starved, blocky 720p every time. This is what
+// real compressors do; a fixed bitrate floor just produces identical failed
+// passes (the old MIN_VIDEO_BITRATE clamp bug).
+const LADDER = [1080, 720, 480, 360];
+const COMFORT_BR = { 1080: 5000000, 720: 2200000, 480: 1000000, 360: 550000 };
+
 function computePlan() {
   const targetBytes = Math.floor(targetMB * 1024 * 1024);
   const totalBits = targetBytes * 8;
-  const audioBits = AUDIO_BITRATE * durationSec;
-  let videoBr = Math.floor((totalBits * SAFETY_MARGIN - audioBits) / durationSec);
-  videoBr = Math.max(MIN_VIDEO_BITRATE, videoBr);
-  return { targetBytes, videoBr };
+  const budgetBits = totalBits * SAFETY_MARGIN;
+
+  // Audio ladder: on tight budgets (long videos) 128k audio eats the whole
+  // budget, so step it down — dialogue stays intelligible at 64k.
+  const roughVideoBr = (budgetBits - AUDIO_BITRATE * durationSec) / durationSec;
+  const audioBr = roughVideoBr < 700000 ? 64000
+    : roughVideoBr < 1500000 ? 96000 : AUDIO_BITRATE;
+
+  let videoBr = Math.floor((budgetBits - audioBr * durationSec) / durationSec);
+
+  // Resolution ladder: tallest height whose comfortable bitrate fits the budget.
+  const srcH = vidHeight || 720;
+  const heights = LADDER.filter(h => h <= srcH);
+  if (!heights.length) heights.push(srcH);
+  let outH = heights[heights.length - 1];
+  for (const h of heights) {
+    if (COMFORT_BR[h] <= videoBr) { outH = h; break; }
+  }
+
+  // Fail fast: even at rock bottom (80k video + 64k audio) this clip can't
+  // fit — tell the user honestly instead of burning minutes on doomed passes.
+  const minTotalBr = ABS_MIN_VIDEO_BR + ABS_MIN_AUDIO_BR;
+  const minBytes = Math.ceil(minTotalBr * durationSec / 8);
+  if (minBytes > targetBytes) {
+    return {
+      targetBytes, videoBr: 0, audioBr, outH,
+      impossible: true,
+      minMB: (minBytes / 1048576).toFixed(1),
+    };
+  }
+
+  videoBr = Math.max(ABS_MIN_VIDEO_BR, videoBr);
+  return { targetBytes, videoBr, audioBr, outH, impossible: false };
 }
 
 function updateEstimate() {
   if (!file || !durationSec) return;
   const plan = computePlan();
   $('estOrig').textContent = fmtMB(file.size);
-  $('estOut').textContent = '≈ ' + (targetMB * SAFETY_MARGIN).toFixed(1) + ' MB';
+  if (plan.impossible) {
+    $('estOut').textContent = '—';
+    $('estPlan').textContent = '';
+  } else {
+    $('estOut').textContent = '≈ ' + (targetMB * SAFETY_MARGIN).toFixed(1) + ' MB';
+    $('estPlan').textContent = plan.outH + 'p · ' + (plan.videoBr / 1e6).toFixed(1) +
+      ' Mbps video + ' + Math.round(plan.audioBr / 1000) + 'k audio';
+  }
   $('estimate').hidden = false;
   const warn = $('qualityWarn');
-  if (plan.videoBr < WARN_BITRATE) {
+  const srcH = vidHeight || plan.outH;
+  if (plan.impossible) {
+    warn.hidden = false;
+    warn.textContent = `⚠️ Even at minimum quality this clip needs ≈ ${plan.minMB} MB — it can't fit in ${targetMB} MB. Try a larger target or trim it shorter.`;
+  } else if (plan.outH < srcH || plan.videoBr < WARN_BITRATE) {
     const nextUp = nextPresetAbove(targetMB);
     warn.hidden = false;
-    warn.textContent = `⚠️ This clip is long for a ${targetMB} MB target — expect visible quality loss. ` +
-      (nextUp ? `Try ${nextUp} MB instead, or trim the video.` : 'Try trimming the video shorter.');
+    warn.textContent = `⚠️ To hit ${targetMB} MB we'll output ${plan.outH}p — expect softer detail. ` +
+      (nextUp ? `Try ${nextUp} MB for sharper quality.` : 'Try trimming the video shorter.');
   } else {
     warn.hidden = true;
   }
@@ -288,13 +337,15 @@ function ensureFFmpeg() {
   return ffmpegLoading;
 }
 
-function buildArgs(inName, outName, videoBrK) {
+function buildArgs(inName, outName, plan) {
+  const videoBrK = Math.max(80, Math.round(plan.videoBr / 1000));
   const args = ['-y', '-i', inName, '-c:v', 'libx264',
     '-b:v', videoBrK + 'k',
     '-maxrate', Math.round(videoBrK * 1.5) + 'k',
     '-bufsize', Math.round(videoBrK * 2) + 'k'];
-  if (vidHeight > 720) args.push('-vf', 'scale=-2:720');
-  args.push('-preset', 'veryfast', '-c:a', 'aac', '-b:a', '128k',
+  const srcH = vidHeight || plan.outH;
+  if (plan.outH < srcH) args.push('-vf', 'scale=-2:' + plan.outH);
+  args.push('-preset', 'veryfast', '-c:a', 'aac', '-b:a', Math.round(plan.audioBr / 1000) + 'k',
     '-movflags', '+faststart', outName);
   return args;
 }
@@ -309,8 +360,31 @@ async function compress() {
   setProgress(2, 'Loading encoder… (first run downloads ~30 MB, then it\'s cached)');
 
   try {
-    const inst = await ensureFFmpeg();
     const plan = computePlan();
+
+    // Fail fast on impossible targets — before downloading the encoder.
+    if (plan.impossible) {
+      showError(`This video can't fit in ${targetMB} MB — even at minimum quality it needs ≈ ${plan.minMB} MB. ` +
+        'Try a larger target size or trim the video shorter.');
+      $('compressBtn').disabled = false;
+      return;
+    }
+
+    // Already under target: no re-encode, no quality loss, instant.
+    if (file.size <= plan.targetBytes) {
+      const dl = $('downloadBtn');
+      dl.href = objectURL;
+      dl.download = file.name || 'video.mp4';
+      $('resOrig').textContent = fmtMB(file.size);
+      $('resOut').textContent = fmtMB(file.size) + ' (no re-encode needed)';
+      $('resTarget').textContent = targetMB;
+      $('progressWrap').hidden = true;
+      $('result').hidden = false;
+      $('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+
+    const inst = await ensureFFmpeg();
     const ext = (file.name && file.name.includes('.'))
       ? file.name.slice(file.name.lastIndexOf('.')).toLowerCase()
       : '.mp4';
@@ -330,15 +404,15 @@ async function compress() {
     let videoBr = plan.videoBr;
     let outData = null;
     let attempt;
-    for (attempt = 1; attempt <= 3; attempt++) {
-      $('attemptText').textContent = 'Pass ' + attempt + ' of up to 3 — targeting under ' + targetMB + ' MB';
+    for (attempt = 1; attempt <= 2; attempt++) {
+      $('attemptText').textContent = 'Pass ' + attempt + ' of up to 2 — targeting under ' + targetMB + ' MB';
       setProgress(3, 'Compressing…');
-      await inst.exec(buildArgs(inName, outName, Math.max(1, Math.round(videoBr / 1000))));
+      await inst.exec(buildArgs(inName, outName, { ...plan, videoBr }));
       outData = await inst.readFile(outName);
       if (outData.length <= plan.targetBytes) break;
-      // Overshot: scale bitrate down proportionally with a safety factor and retry
-      videoBr = Math.floor(videoBr * (plan.targetBytes / outData.length) * 0.97);
-      videoBr = Math.max(MIN_VIDEO_BITRATE, videoBr);
+      // Overshot: scale bitrate down proportionally with a safety factor and retry once
+      videoBr = Math.max(ABS_MIN_VIDEO_BR,
+        Math.floor(videoBr * (plan.targetBytes / outData.length) * 0.97));
     }
 
     await inst.deleteFile(inName).catch(() => {});
@@ -346,7 +420,7 @@ async function compress() {
 
     if (!outData || outData.length === 0) throw new Error('encode-failed');
     if (outData.length > plan.targetBytes) {
-      showError('We couldn\'t get this clip under ' + targetMB + ' MB after 3 passes without destroying quality. Try a larger target size or trim the video shorter.');
+      showError('We couldn\'t get this clip under ' + targetMB + ' MB after 2 passes. Try a larger target size or trim the video shorter.');
       return;
     }
 

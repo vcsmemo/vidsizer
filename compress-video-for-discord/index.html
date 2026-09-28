@@ -68,7 +68,8 @@
       </div>
       <div class="estimate" id="estimate" hidden>
         Original: <b id="estOrig"></b> → Estimated output: <b id="estOut"></b>
-        <span style="color:var(--muted);font-size:.85rem">(4% safety margin keeps you under the limit)</span>
+        <span style="color:var(--muted);font-size:.85rem">(6% safety margin keeps you under the limit)</span><br>
+        <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
         <p class="warn" id="qualityWarn" hidden></p>
       </div>
       <button class="cta" id="compressBtn" disabled>Compress for Discord</button>
@@ -105,7 +106,7 @@
   <section class="section">
     <h2>FAQ</h2>
     <details class="faq"><summary>How do I make a video small enough to send on Discord?</summary><p>Compress it to just under your plan's cap: 20 MB (free), 50 MB (Nitro Basic), or 500 MB (Nitro). Drop your video in the tool above, pick the matching preset, and download the result — it's verified to fit before you ever try uploading.</p></details>
-    <details class="faq"><summary>Why does Discord keep rejecting my video?</summary><p>Discord hard-rejects attachments over your plan's limit. Even 20.1 MB fails on a free account. That's why VidSizer targets ~4% under the cap instead of "about 20 MB".</p></details>
+    <details class="faq"><summary>Why does Discord keep rejecting my video?</summary><p>Discord hard-rejects attachments over your plan's limit. Even 20.1 MB fails on a free account. That's why VidSizer targets ~6% under the cap instead of "about 20 MB".</p></details>
     <details class="faq"><summary>Is this safe? Do you keep my video?</summary><p>There's nothing to keep — compression runs entirely in your browser tab. No upload, no account, no watermark.</p></details>
     <details class="faq"><summary>Will my video look bad after compression?</summary><p>Short clips compress beautifully. Long clips at small targets are a physics problem, not a tool problem — VidSizer warns you upfront when the target is unrealistic, and suggests the next size up or trimming.</p></details>
   </section>

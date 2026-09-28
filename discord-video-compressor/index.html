@@ -15,7 +15,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"What is the Discord video upload limit in 2026?","acceptedAnswer":{"@type":"Answer","text":"As of August 2026: 20MB for free accounts, 50MB for Nitro Basic, and 500MB for full Nitro. The old 8MB free limit no longer applies."}},
-{"@type":"Question","name":"How do I compress a video to exactly 20MB for Discord?","acceptedAnswer":{"@type":"Answer","text":"Drop your video into VidSizer, select the Discord 20MB preset, and hit Compress. It computes the exact bitrate for your clip's duration and verifies the output lands under 20MB — up to 3 encoding passes."}},
+{"@type":"Question","name":"How do I compress a video to exactly 20MB for Discord?","acceptedAnswer":{"@type":"Answer","text":"Drop your video into VidSizer, select the Discord 20MB preset, and hit Compress. It computes the exact bitrate for your clip's duration and verifies the output lands under 20MB — with a verify-and-retry second pass if needed."}},
 {"@type":"Question","name":"Is it safe / private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Everything runs in your browser tab — your video is never uploaded to any server."}}
 ]}
 </script>
@@ -68,7 +68,8 @@
       </div>
       <div class="estimate" id="estimate" hidden>
         Original: <b id="estOrig"></b> → Estimated output: <b id="estOut"></b>
-        <span style="color:var(--muted);font-size:.85rem">(4% safety margin keeps you under the limit)</span>
+        <span style="color:var(--muted);font-size:.85rem">(6% safety margin keeps you under the limit)</span><br>
+        <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
         <p class="warn" id="qualityWarn" hidden></p>
       </div>
       <button class="cta" id="compressBtn" disabled>Compress for Discord</button>
@@ -106,7 +107,7 @@
 
   <section class="section">
     <h2>Why "exact size" matters for Discord</h2>
-    <p>Discord checks one number: file size. A "High quality" preset on another tool can still produce a 34 MB file that Discord rejects — and you only find out after waiting for an upload. VidSizer works backwards from the limit: it measures your clip's duration, solves for the exact bitrate, encodes, <em>measures the real output</em>, and re-encodes up to 3 times until the file is provably under your plan's cap. What you download is what Discord accepts.</p>
+    <p>Discord checks one number: file size. A "High quality" preset on another tool can still produce a 34 MB file that Discord rejects — and you only find out after waiting for an upload. VidSizer works backwards from the limit: it measures your clip's duration, solves for the exact bitrate, encodes, <em>measures the real output</em>, and re-encodes once more until the file is provably under your plan's cap. What you download is what Discord accepts.</p>
     <p>Need the full breakdown? See <a href="/discord-video-size-limit/">Discord video size limit explained</a>.</p>
   </section>
 

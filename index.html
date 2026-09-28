@@ -16,7 +16,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"Is VidSizer free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Compression runs entirely in your browser using your device's CPU, so there are no server costs to pass on to you. No signup, no watermark, no limits on tries."}},
 {"@type":"Question","name":"Does my video get uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Your video never leaves your device. The file is read, compressed, and downloaded locally in your browser tab."}},
-{"@type":"Question","name":"How does exact-size compression work?","acceptedAnswer":{"@type":"Answer","text":"VidSizer reads your video's duration, then computes the exact video bitrate needed to land just under your target size (with a 4% safety margin), and re-encodes until the output fits — up to 3 passes."}},
+{"@type":"Question","name":"How does exact-size compression work?","acceptedAnswer":{"@type":"Answer","text":"VidSizer reads your video's duration, then computes the exact video bitrate needed to land just under your target size (with a 6% safety margin), and re-encodes once more if the output overshoots."}},
 {"@type":"Question","name":"What video formats are supported?","acceptedAnswer":{"@type":"Answer","text":"MP4, MOV, WebM, MKV and most common formats work as input. Output is always MP4 (H.264 + AAC) with faststart enabled for easy sharing."}}
 ]}
 </script>
@@ -69,7 +69,8 @@
       </div>
       <div class="estimate" id="estimate" hidden>
         Original: <b id="estOrig"></b> → Estimated output: <b id="estOut"></b>
-        <span style="color:var(--muted);font-size:.85rem">(4% safety margin keeps you under the limit)</span>
+        <span style="color:var(--muted);font-size:.85rem">(6% safety margin keeps you under the limit)</span><br>
+        <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
         <p class="warn" id="qualityWarn" hidden></p>
       </div>
       <button class="cta" id="compressBtn" disabled>Compress</button>
@@ -93,14 +94,14 @@
     <div class="steps">
       <div class="step"><span class="step-num">1</span><h3>Drop your video</h3><p>Your file is read locally in the browser. Nothing is uploaded to any server.</p></div>
       <div class="step"><span class="step-num">2</span><h3>Pick an exact size</h3><p>Choose a platform preset (Discord 20 MB, WhatsApp 16 MB…) or type any custom MB number.</p></div>
-      <div class="step"><span class="step-num">3</span><h3>Download the result</h3><p>VidSizer computes the precise bitrate, encodes (up to 3 verify-and-retry passes), and hands you a file just under your limit.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download the result</h3><p>VidSizer computes the precise bitrate, encodes (with a verify-and-retry second pass if needed), and hands you a file just under your limit.</p></div>
     </div>
   </section>
 
   <section class="section">
     <h2>Why exact size beats "Low / Medium / High"</h2>
     <p>Most compressors ask you to pick a quality preset and hope the output fits. That is backwards: the platform doesn't care about your quality setting — it cares about <strong>megabytes</strong>. A 3-minute 4K clip on "Medium" can still be 80 MB, and Discord will still reject it.</p>
-    <p>VidSizer starts from the number that actually matters. It reads your video's duration, solves for the exact bitrate that fits your target (minus a 4% safety margin and audio), then verifies the output and re-encodes if it overshoots. If your clip is simply too long for the target, it tells you honestly <em>before</em> you waste time — instead of silently handing you a 400p mess.</p>
+    <p>VidSizer starts from the number that actually matters. It reads your video's duration, solves for the exact bitrate that fits your target (), then verifies the output and re-encodes once more if it overshoots. If your clip is simply too long for the target, it tells you honestly <em>before</em> you waste time — instead of silently handing you a 400p mess.</p>
   </section>
 
   <section class="section">
@@ -119,7 +120,7 @@
     <h2>FAQ</h2>
     <details class="faq"><summary>Is VidSizer really free?</summary><p>Yes. Because compression happens on your own device, there is no server bill to cover — so there is nothing to charge for. No account, no watermark, no capped "free tier".</p></details>
     <details class="faq"><summary>Does my video get uploaded to your servers?</summary><p>No. There are no servers involved at all. The video encoder (FFmpeg) is downloaded once into your browser and runs locally. Your file never leaves your device.</p></details>
-    <details class="faq"><summary>How can the output be an "exact" size?</summary><p>File size ≈ bitrate × duration. VidSizer measures your video's duration, subtracts the audio track's share and a 4% safety margin, and solves for the video bitrate that lands just under your target. After encoding it checks the real file size and re-encodes up to 3 times if it overshoots.</p></details>
+    <details class="faq"><summary>How can the output be an "exact" size?</summary><p>File size ≈ bitrate × duration. VidSizer measures your video's duration, subtracts the audio track's share and a 6% safety margin, and solves for the video bitrate that lands just under your target. If the budget is tight it steps down the resolution ladder (1080p → 720p → 480p → 360p) instead of starving pixels. After encoding it checks the real file size and re-encodes once more if it overshoots.</p></details>
     <details class="faq"><summary>What formats can I upload? What do I get back?</summary><p>MP4, MOV, WebM, MKV and most common formats work as input. Output is always MP4 (H.264 video + AAC audio) with faststart enabled, so it plays everywhere and uploads cleanly.</p></details>
     <details class="faq"><summary>Will quality suffer?</summary><p>It depends on the math: a 30-second clip at 20 MB looks great; a 20-minute clip at 20 MB cannot. VidSizer warns you honestly when the target is unrealistic for the clip length, and suggests a bigger target or trimming.</p></details>
     <details class="faq"><summary>Why is my video scaled to 720p?</summary><p>For small targets (like 20 MB), keeping 1080p or 4K resolution forces an extremely low bitrate per pixel, which looks worse than a clean 720p encode. Videos taller than 720p are scaled down; smaller videos keep their native resolution.</p></details>
