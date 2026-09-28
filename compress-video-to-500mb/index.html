@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compress Video to 500MB — Exact Size, Free, In Your Browser</title>
+<meta name="description" content="Compress any video to exactly 500MB — Discord Nitro's upload limit. Exact bitrate math, verified output, 100% in-browser. No upload, no signup, no watermark.">
+<link rel="canonical" href="https://vidsizer.com/compress-video-to-500mb/">
+<meta property="og:title" content="Compress Video to 500MB — exact, free, private">
+<meta property="og:description" content="Set 500MB, get a video back just under 500MB. Free, in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsizer.com/compress-video-to-500mb/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How do I compress a video to exactly 500MB?","acceptedAnswer":{"@type":"Answer","text":"Drop your video into VidSizer with the 500MB target selected. It computes the exact bitrate for your clip's duration, encodes, verifies the output is under 500MB, and re-encodes up to 3 times if needed."}},
+{"@type":"Question","name":"Why 500MB?","acceptedAnswer":{"@type":"Answer","text":"500MB is Discord Nitro's (full) attachment limit. It's the right target for long or high-quality clips on a Nitro account."}}
+]}
+</script>
+</head>
+<body data-preset="500">
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Vid<span>Sizer</span></a>
+    <div class="nav-links">
+      <a href="/discord-video-compressor/">Discord</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/discord-video-size-limit/">Size limits</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">Free · No signup · No watermark</span>
+    <h1>Compress video to 500 MB</h1>
+    <p class="lede">500 MB is Discord Nitro's upload limit. Drop in a large clip and get back a file <strong>guaranteed just under 500 MB</strong> — great for long recordings at high quality.</p>
+  </section>
+
+  <section class="tool" id="tool" data-preset="500" aria-label="Compress video to 500MB tool">
+    <div class="tool-card">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
+        <input type="file" id="fileInput" accept="video/*" hidden>
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="drop-title">Drop your video here</p>
+        <p class="drop-sub">or <button type="button" class="link-btn" id="browseBtn">browse files</button></p>
+        <p class="drop-note">MP4, MOV, WebM… — processed 100% on your device</p>
+      </div>
+      <div class="file-info" id="fileInfo" hidden>
+        <div class="file-row"><span id="fileName"></span><button class="remove-btn" id="removeFile" aria-label="Remove file">×</button></div>
+        <div class="file-meta"><span id="metaDuration"></span> · <span id="metaDims"></span> · <span id="metaSize"></span></div>
+      </div>
+      <div class="presets">
+        <p class="presets-label">Target size</p>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" data-target="20">Discord · 20 MB</button>
+          <button type="button" class="chip" data-target="50">Nitro Basic · 50 MB</button>
+          <button type="button" class="chip" data-target="500">Nitro · 500 MB</button>
+          <button type="button" class="chip" data-target="16">WhatsApp · 16 MB</button>
+          <button type="button" class="chip" data-target="25">Gmail · 25 MB</button>
+          <button type="button" class="chip" id="customChip">Custom…</button>
+        </div>
+        <div class="custom-row" id="customRow" hidden>
+          <input type="number" id="customMB" min="1" max="2000" placeholder="35" inputmode="numeric" aria-label="Custom target size in MB"> <span>MB</span>
+        </div>
+      </div>
+      <div class="estimate" id="estimate" hidden>
+        Original: <b id="estOrig"></b> → Estimated output: <b id="estOut"></b>
+        <span style="color:var(--muted);font-size:.85rem">(4% safety margin keeps you under the limit)</span>
+        <p class="warn" id="qualityWarn" hidden></p>
+      </div>
+      <button class="cta" id="compressBtn" disabled>Compress to 500 MB</button>
+      <div class="progress" id="progressWrap" hidden>
+        <div class="bar"><div id="progressBar"></div></div>
+        <p id="progressText">Loading encoder…</p>
+        <p id="attemptText"></p>
+      </div>
+      <div class="result" id="result" hidden>
+        <p class="money">Original: <b id="resOrig"></b> → Output: <b id="resOut"></b><br><span class="under">✓ under your <span id="resTarget"></span> MB limit</span></p>
+        <a class="cta" id="downloadBtn" href="#" download>Download video</a><br>
+        <button class="ghost" id="againBtn">Compress another</button>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <p class="privacy">🔒 Your video never leaves your device. No upload, no signup, no watermark.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Why 500 MB?</h2>
+    <p>500 MB is the attachment cap for full <strong>Discord Nitro</strong> (<span class="verified">verified September 2026</span>). At this budget, even hour-long clips compress with excellent quality — and since everything runs in your browser, there are no upload queues or file-size restrictions on our side. One honest note: very large source files (approaching 1 GB) can exhaust a browser tab's memory — for those, trim first or use a desktop browser.</p>
+    <p>Need a different cap? <a href="/compress-video-to-20mb/">Compress to 20 MB</a> · <a href="/compress-video-to-50mb/">Compress to 50 MB</a> · <a href="/discord-video-compressor/">Discord video compressor</a></p>
+  </section>
+
+  <section class="section">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>How do I compress a video to exactly 500 MB?</summary><p>Select the 500 MB target above and hit Compress. VidSizer measures your clip's duration, solves for the exact bitrate, and re-encodes up to 3 times until the output is provably under 500 MB.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
+    <details class="faq"><summary>My source file is huge. Will this work?</summary><p>Files up to ~1 GB generally work in a desktop browser. Beyond that, browser tabs run out of memory — trim the clip first, then compress.</p></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/discord-video-compressor/">Discord video compressor</a>
+      <a href="/compress-video-for-discord/">Compress video for Discord</a>
+      <a href="/discord-video-size-limit/">Discord video size limit</a>
+      <a href="/compress-video-to-20mb/">20 MB</a>
+      <a href="/compress-video-to-50mb/">50 MB</a>
+      <a href="/compress-video-to-500mb/">500 MB</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+    </nav>
+    <p>VidSizer — compress any video to any exact size, free, in your browser. Your videos never leave your device.</p>
+  </div>
+</footer>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

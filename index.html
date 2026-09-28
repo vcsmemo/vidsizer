@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidSizer — Compress Any Video to Any Exact Size (Free, In Your Browser)</title>
+<meta name="description" content="Pick an exact target size — 20MB for Discord, 16MB for WhatsApp, 25MB for Gmail, or any custom MB — and VidSizer compresses your video to just under the limit. 100% in your browser. No upload, no signup, no watermark.">
+<link rel="canonical" href="https://vidsizer.com/">
+<meta property="og:title" content="VidSizer — Compress Any Video to Any Exact Size">
+<meta property="og:description" content="Set an exact target size. Get a video just under the limit. Free, private, in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsizer.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Is VidSizer free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Compression runs entirely in your browser using your device's CPU, so there are no server costs to pass on to you. No signup, no watermark, no limits on tries."}},
+{"@type":"Question","name":"Does my video get uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Your video never leaves your device. The file is read, compressed, and downloaded locally in your browser tab."}},
+{"@type":"Question","name":"How does exact-size compression work?","acceptedAnswer":{"@type":"Answer","text":"VidSizer reads your video's duration, then computes the exact video bitrate needed to land just under your target size (with a 4% safety margin), and re-encodes until the output fits — up to 3 passes."}},
+{"@type":"Question","name":"What video formats are supported?","acceptedAnswer":{"@type":"Answer","text":"MP4, MOV, WebM, MKV and most common formats work as input. Output is always MP4 (H.264 + AAC) with faststart enabled for easy sharing."}}
+]}
+</script>
+</head>
+<body data-preset="20">
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Vid<span>Sizer</span></a>
+    <div class="nav-links">
+      <a href="/discord-video-compressor/">Discord</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/discord-video-size-limit/">Size limits</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">Free · No signup · No watermark</span>
+    <h1>Compress any video to any exact size</h1>
+    <p class="lede">Stop guessing with Low / Medium / High. Tell VidSizer the exact size you need — <strong>20 MB for Discord</strong>, <strong>16 MB for WhatsApp</strong>, or any custom number — and get a video back just under the limit.</p>
+  </section>
+
+  <section class="tool" id="tool" data-preset="20" aria-label="Video compressor tool">
+    <div class="tool-card">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
+        <input type="file" id="fileInput" accept="video/*" hidden>
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="drop-title">Drop your video here</p>
+        <p class="drop-sub">or <button type="button" class="link-btn" id="browseBtn">browse files</button></p>
+        <p class="drop-note">MP4, MOV, WebM… — processed 100% on your device</p>
+      </div>
+      <div class="file-info" id="fileInfo" hidden>
+        <div class="file-row"><span id="fileName"></span><button class="remove-btn" id="removeFile" aria-label="Remove file">×</button></div>
+        <div class="file-meta"><span id="metaDuration"></span> · <span id="metaDims"></span> · <span id="metaSize"></span></div>
+      </div>
+      <div class="presets">
+        <p class="presets-label">Target size</p>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" data-target="20">Discord · 20 MB</button>
+          <button type="button" class="chip" data-target="50">Nitro Basic · 50 MB</button>
+          <button type="button" class="chip" data-target="500">Nitro · 500 MB</button>
+          <button type="button" class="chip" data-target="16">WhatsApp · 16 MB</button>
+          <button type="button" class="chip" data-target="25">Gmail · 25 MB</button>
+          <button type="button" class="chip" id="customChip">Custom…</button>
+        </div>
+        <div class="custom-row" id="customRow" hidden>
+          <input type="number" id="customMB" min="1" max="2000" placeholder="35" inputmode="numeric" aria-label="Custom target size in MB"> <span>MB</span>
+        </div>
+      </div>
+      <div class="estimate" id="estimate" hidden>
+        Original: <b id="estOrig"></b> → Estimated output: <b id="estOut"></b>
+        <span style="color:var(--muted);font-size:.85rem">(4% safety margin keeps you under the limit)</span>
+        <p class="warn" id="qualityWarn" hidden></p>
+      </div>
+      <button class="cta" id="compressBtn" disabled>Compress</button>
+      <div class="progress" id="progressWrap" hidden>
+        <div class="bar"><div id="progressBar"></div></div>
+        <p id="progressText">Loading encoder…</p>
+        <p id="attemptText"></p>
+      </div>
+      <div class="result" id="result" hidden>
+        <p class="money">Original: <b id="resOrig"></b> → Output: <b id="resOut"></b><br><span class="under">✓ under your <span id="resTarget"></span> MB limit</span></p>
+        <a class="cta" id="downloadBtn" href="#" download>Download video</a><br>
+        <button class="ghost" id="againBtn">Compress another</button>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <p class="privacy">🔒 Your video never leaves your device. No upload, no signup, no watermark.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video</h3><p>Your file is read locally in the browser. Nothing is uploaded to any server.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Pick an exact size</h3><p>Choose a platform preset (Discord 20 MB, WhatsApp 16 MB…) or type any custom MB number.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download the result</h3><p>VidSizer computes the precise bitrate, encodes (up to 3 verify-and-retry passes), and hands you a file just under your limit.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Why exact size beats "Low / Medium / High"</h2>
+    <p>Most compressors ask you to pick a quality preset and hope the output fits. That is backwards: the platform doesn't care about your quality setting — it cares about <strong>megabytes</strong>. A 3-minute 4K clip on "Medium" can still be 80 MB, and Discord will still reject it.</p>
+    <p>VidSizer starts from the number that actually matters. It reads your video's duration, solves for the exact bitrate that fits your target (minus a 4% safety margin and audio), then verifies the output and re-encodes if it overshoots. If your clip is simply too long for the target, it tells you honestly <em>before</em> you waste time — instead of silently handing you a 400p mess.</p>
+  </section>
+
+  <section class="section">
+    <h2>Popular targets</h2>
+    <div class="grid-links">
+      <a href="/discord-video-compressor/"><strong>Discord video compressor</strong><span>Compress to exactly 20 / 50 / 500 MB</span></a>
+      <a href="/compress-video-to-20mb/"><strong>Compress video to 20 MB</strong><span>Discord free upload limit</span></a>
+      <a href="/compress-video-to-50mb/"><strong>Compress video to 50 MB</strong><span>Discord Nitro Basic limit</span></a>
+      <a href="/compress-video-to-500mb/"><strong>Compress video to 500 MB</strong><span>Discord Nitro limit</span></a>
+      <a href="/compress-video-for-whatsapp/"><strong>Compress video for WhatsApp</strong><span>16 MB document limit</span></a>
+      <a href="/compress-video-for-gmail/"><strong>Compress video for Gmail</strong><span>25 MB attachment limit</span></a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>Is VidSizer really free?</summary><p>Yes. Because compression happens on your own device, there is no server bill to cover — so there is nothing to charge for. No account, no watermark, no capped "free tier".</p></details>
+    <details class="faq"><summary>Does my video get uploaded to your servers?</summary><p>No. There are no servers involved at all. The video encoder (FFmpeg) is downloaded once into your browser and runs locally. Your file never leaves your device.</p></details>
+    <details class="faq"><summary>How can the output be an "exact" size?</summary><p>File size ≈ bitrate × duration. VidSizer measures your video's duration, subtracts the audio track's share and a 4% safety margin, and solves for the video bitrate that lands just under your target. After encoding it checks the real file size and re-encodes up to 3 times if it overshoots.</p></details>
+    <details class="faq"><summary>What formats can I upload? What do I get back?</summary><p>MP4, MOV, WebM, MKV and most common formats work as input. Output is always MP4 (H.264 video + AAC audio) with faststart enabled, so it plays everywhere and uploads cleanly.</p></details>
+    <details class="faq"><summary>Will quality suffer?</summary><p>It depends on the math: a 30-second clip at 20 MB looks great; a 20-minute clip at 20 MB cannot. VidSizer warns you honestly when the target is unrealistic for the clip length, and suggests a bigger target or trimming.</p></details>
+    <details class="faq"><summary>Why is my video scaled to 720p?</summary><p>For small targets (like 20 MB), keeping 1080p or 4K resolution forces an extremely low bitrate per pixel, which looks worse than a clean 720p encode. Videos taller than 720p are scaled down; smaller videos keep their native resolution.</p></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/discord-video-compressor/">Discord video compressor</a>
+      <a href="/compress-video-for-discord/">Compress video for Discord</a>
+      <a href="/discord-video-size-limit/">Discord video size limit</a>
+      <a href="/compress-video-to-20mb/">20 MB</a>
+      <a href="/compress-video-to-50mb/">50 MB</a>
+      <a href="/compress-video-to-500mb/">500 MB</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+    </nav>
+    <p>VidSizer — compress any video to any exact size, free, in your browser. Your videos never leave your device.</p>
+  </div>
+</footer>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discord Video Compressor — Compress to Exactly 20MB / 50MB / 500MB (Free)</title>
+<meta name="description" content="Free Discord video compressor that hits an EXACT size: 20MB (free), 50MB (Nitro Basic), 500MB (Nitro). No guessing with Low/Medium/High — runs 100% in your browser, no upload, no signup, no watermark.">
+<link rel="canonical" href="https://vidsizer.com/discord-video-compressor/">
+<meta property="og:title" content="Discord Video Compressor — exact 20MB / 50MB / 500MB">
+<meta property="og:description" content="Pick your Discord plan, get a video back just under the limit. Free, private, in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsizer.com/discord-video-compressor/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%234f46e5'/%3E%3Cpath d='M20 24l14 8-14 8z' fill='white'/%3E%3Cpath d='M36 24l14 8-14 8z' fill='white' opacity='.55'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the Discord video upload limit in 2026?","acceptedAnswer":{"@type":"Answer","text":"As of August 2026: 20MB for free accounts, 50MB for Nitro Basic, and 500MB for full Nitro. The old 8MB free limit no longer applies."}},
+{"@type":"Question","name":"How do I compress a video to exactly 20MB for Discord?","acceptedAnswer":{"@type":"Answer","text":"Drop your video into VidSizer, select the Discord 20MB preset, and hit Compress. It computes the exact bitrate for your clip's duration and verifies the output lands under 20MB — up to 3 encoding passes."}},
+{"@type":"Question","name":"Is it safe / private?","acceptedAnswer":{"@type":"Answer","text":"Yes. Everything runs in your browser tab — your video is never uploaded to any server."}}
+]}
+</script>
+</head>
+<body data-preset="20">
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Vid<span>Sizer</span></a>
+    <div class="nav-links">
+      <a href="/discord-video-compressor/">Discord</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/discord-video-size-limit/">Size limits</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">Free · No signup · No watermark</span>
+    <h1>Discord video compressor</h1>
+    <p class="lede">Discord rejects anything over your plan's limit. Pick your plan below — <strong>20 MB free, 50 MB Nitro Basic, 500 MB Nitro</strong> — and get back a video guaranteed just under the limit.</p>
+  </section>
+
+  <section class="tool" id="tool" data-preset="20" aria-label="Discord video compressor tool">
+    <div class="tool-card">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
+        <input type="file" id="fileInput" accept="video/*" hidden>
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="drop-title">Drop your video here</p>
+        <p class="drop-sub">or <button type="button" class="link-btn" id="browseBtn">browse files</button></p>
+        <p class="drop-note">MP4, MOV, WebM… — processed 100% on your device</p>
+      </div>
+      <div class="file-info" id="fileInfo" hidden>
+        <div class="file-row"><span id="fileName"></span><button class="remove-btn" id="removeFile" aria-label="Remove file">×</button></div>
+        <div class="file-meta"><span id="metaDuration"></span> · <span id="metaDims"></span> · <span id="metaSize"></span></div>
+      </div>
+      <div class="presets">
+        <p class="presets-label">Target size — pick your Discord plan</p>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" data-target="20">Discord Free · 20 MB</button>
+          <button type="button" class="chip" data-target="50">Nitro Basic · 50 MB</button>
+          <button type="button" class="chip" data-target="500">Nitro · 500 MB</button>
+          <button type="button" class="chip" data-target="16">WhatsApp · 16 MB</button>
+          <button type="button" class="chip" data-target="25">Gmail · 25 MB</button>
+          <button type="button" class="chip" id="customChip">Custom…</button>
+        </div>
+        <div class="custom-row" id="customRow" hidden>
+          <input type="number" id="customMB" min="1" max="2000" placeholder="35" inputmode="numeric" aria-label="Custom target size in MB"> <span>MB</span>
+        </div>
+      </div>
+      <div class="estimate" id="estimate" hidden>
+        Original: <b id="estOrig"></b> → Estimated output: <b id="estOut"></b>
+        <span style="color:var(--muted);font-size:.85rem">(4% safety margin keeps you under the limit)</span>
+        <p class="warn" id="qualityWarn" hidden></p>
+      </div>
+      <button class="cta" id="compressBtn" disabled>Compress for Discord</button>
+      <div class="progress" id="progressWrap" hidden>
+        <div class="bar"><div id="progressBar"></div></div>
+        <p id="progressText">Loading encoder…</p>
+        <p id="attemptText"></p>
+      </div>
+      <div class="result" id="result" hidden>
+        <p class="money">Original: <b id="resOrig"></b> → Output: <b id="resOut"></b><br><span class="under">✓ under your <span id="resTarget"></span> MB limit</span></p>
+        <a class="cta" id="downloadBtn" href="#" download>Download video</a><br>
+        <button class="ghost" id="againBtn">Compress another</button>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <p class="privacy">🔒 Your video never leaves your device. No upload, no signup, no watermark.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Current Discord upload limits</h2>
+    <table class="limits">
+      <tr><th>Plan</th><th>Max file size</th><th>Preset above</th></tr>
+      <tr><td>Discord Free</td><td><strong>20 MB</strong></td><td>Discord · 20 MB</td></tr>
+      <tr><td>Nitro Basic</td><td><strong>50 MB</strong></td><td>Nitro Basic · 50 MB</td></tr>
+      <tr><td>Nitro (full)</td><td><strong>500 MB</strong></td><td>Nitro · 500 MB</td></tr>
+    </table>
+    <p class="verified">Limits last verified: September 2026. Discord raised the limits in August 2026 (free went from 10 MB to 20 MB).</p>
+  </section>
+
+  <section class="section">
+    <h2>Ignore the outdated "8 MB" advice</h2>
+    <p>A lot of compressor sites still tell you Discord's limit is <strong>8 MB</strong> — that was the old free limit, years ago. Others say 10 MB or 25 MB, which were also correct at different times but are wrong now. If you compress to 8 MB today, you're throwing away quality for no reason: free accounts can upload <strong>20 MB</strong>.</p>
+    <p>VidSizer's presets track the current limits, and this page is updated when Discord changes them.</p>
+  </section>
+
+  <section class="section">
+    <h2>Why "exact size" matters for Discord</h2>
+    <p>Discord checks one number: file size. A "High quality" preset on another tool can still produce a 34 MB file that Discord rejects — and you only find out after waiting for an upload. VidSizer works backwards from the limit: it measures your clip's duration, solves for the exact bitrate, encodes, <em>measures the real output</em>, and re-encodes up to 3 times until the file is provably under your plan's cap. What you download is what Discord accepts.</p>
+    <p>Need the full breakdown? See <a href="/discord-video-size-limit/">Discord video size limit explained</a>.</p>
+  </section>
+
+  <section class="section">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>What is Discord's video upload limit in 2026?</summary><p>20 MB for free accounts, 50 MB for Nitro Basic, and 500 MB for full Nitro — raised by Discord in August 2026. <span class="verified">Last verified September 2026.</span></p></details>
+    <details class="faq"><summary>How do I compress a video to exactly 20 MB for Discord?</summary><p>Drop your video above, keep the "Discord Free · 20 MB" preset selected, and hit Compress. VidSizer computes the exact bitrate for your clip and verifies the output is under 20 MB before you download it.</p></details>
+    <details class="faq"><summary>Is it private? Where does my video go?</summary><p>Nowhere. The encoder runs inside your browser tab — your video is never uploaded to any server, and there's no account or watermark.</p></details>
+    <details class="faq"><summary>My video is long. Will 20 MB look terrible?</summary><p>Possibly — the tool warns you honestly when the math doesn't work (e.g. a 15-minute clip at 20 MB). In that case use the 50 MB preset, trim the clip, or accept the quality tradeoff with eyes open.</p></details>
+    <details class="faq"><summary>What format does Discord accept?</summary><p>Discord accepts MP4, WebM and MOV among others. VidSizer outputs MP4 (H.264 + AAC) with faststart, which uploads and plays back cleanly on Discord.</p></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/discord-video-compressor/">Discord video compressor</a>
+      <a href="/compress-video-for-discord/">Compress video for Discord</a>
+      <a href="/discord-video-size-limit/">Discord video size limit</a>
+      <a href="/compress-video-to-20mb/">20 MB</a>
+      <a href="/compress-video-to-50mb/">50 MB</a>
+      <a href="/compress-video-to-500mb/">500 MB</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+    </nav>
+    <p>VidSizer — compress any video to any exact size, free, in your browser. Your videos never leave your device.</p>
+  </div>
+</footer>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
