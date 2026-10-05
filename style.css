@@ -347,6 +347,8 @@ details.faq p { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.96rem; }
 .footer-inner nav { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; margin-bottom: 0.8rem; }
 .footer-inner nav a { color: #b8ae99; text-decoration: none; font-size: 0.9rem; }
 .footer-inner nav a:hover { color: var(--sun); }
+.footer-badges { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 1rem; }
+.footer-badges img { display: block; height: 56px; width: auto; }
 
 @media (max-width: 560px) {
   .tool-card { padding: 1.1rem; box-shadow: 4px 4px 0 var(--ink); }
