@@ -18,6 +18,9 @@
 {"@type":"Question","name":"Why 500MB?","acceptedAnswer":{"@type":"Answer","text":"500MB is Discord Nitro's (full) attachment limit. It's the right target for long or high-quality clips on a Nitro account."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Get exactly 500 MB in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Lock in 500 MB", "text": "The 500 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders."}, {"@type": "HowToStep", "name": "Download under the limit", "text": "The output is measured and re-encoded until it's provably under 500 MB, with a 6% safety margin, then downloads straight to your device."}]}
+</script>
 </head>
 <body data-preset="500">
 <header class="site-header">
@@ -85,7 +88,15 @@
     </div>
   </section>
 
-  <section class="section">
+    <section class="section">
+    <h2>Get exactly 500 MB in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Lock in 500 MB</h3><p>The 500 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download under the limit</h3><p>The output is measured and re-encoded until it's provably under 500 MB, with a 6% safety margin, then downloads straight to your device.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why 500 MB?</h2>
     <p>500 MB is the attachment cap for full <strong>Discord Nitro</strong> (<span class="verified">verified September 2026</span>). At this budget, even hour-long clips compress with excellent quality — and since everything runs in your browser, there are no upload queues or file-size restrictions on our side. One honest note: very large source files (approaching 1 GB) can exhaust a browser tab's memory — for those, trim first or use a desktop browser.</p>
     <p>Need a different cap? <a href="/compress-video-to-20mb/">Compress to 20 MB</a> · <a href="/compress-video-to-50mb/">Compress to 50 MB</a> · <a href="/discord-video-compressor/">Discord video compressor</a></p>
@@ -102,6 +113,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

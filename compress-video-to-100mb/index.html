@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Get exactly 100 MB in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Lock in 100 MB", "text": "The 100 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders."}, {"@type": "HowToStep", "name": "Download under the limit", "text": "The output is measured and re-encoded until it's provably under 100 MB, with a 6% safety margin, then downloads straight to your device."}]}
+</script>
 </head>
 <body data-preset="100">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Get exactly 100 MB in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Lock in 100 MB</h3><p>The 100 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download under the limit</h3><p>The output is measured and re-encoded until it's provably under 100 MB, with a 6% safety margin, then downloads straight to your device.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>When 100 MB is the right target</h2>
     <p>20 MB is perfect for a 30-second Discord clip — but squeeze a 10-minute recording into 20 MB and the math turns brutal. 100 MB gives you <strong>5&times; the bitrate budget</strong>: a 10-minute video at 100 MB holds clean 720p where 20 MB would force mushy 360p.</p>
     <p>It's also the sweet spot under caps that sit above email limits: course uploads, portfolio sites, and sharing services that accept &ldquo;up to 100 MB&rdquo;. Set it, get a verified file back, move on.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

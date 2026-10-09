@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Post it on Reddit in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Compress to 50 MB", "text": "The 50 MB preset is pre-selected. A 50 MB file uploads in seconds and looks the same in Reddit's player as the original."}, {"@type": "HowToStep", "name": "Upload without the stalled bar", "text": "Download the result and post it — no more watching a 900 MB upload crawl for a megabyte player."}]}
+</script>
 </head>
 <body data-preset="50">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Post it on Reddit in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Compress to 50 MB</h3><p>The 50 MB preset is pre-selected. A 50 MB file uploads in seconds and looks the same in Reddit's player as the original.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Upload without the stalled bar</h3><p>Download the result and post it — no more watching a 900 MB upload crawl for a megabyte player.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Don't upload a gigabyte to get a megabyte player</h2>
     <p>Every video on Reddit gets re-encoded for the v.redd.it player no matter what you upload. Feeding it a 900 MB file doesn't buy you quality — it buys you a stalled upload bar. A well-encoded 50 MB file uploads in seconds and looks the same in the player.</p>
     <p>Posting a long clip? Reddit's hard ceiling is <strong>15 minutes</strong> — trim first, then compress to your exact target here.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

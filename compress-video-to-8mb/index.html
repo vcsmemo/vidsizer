@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Get exactly 8 MB in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Lock in 8 MB", "text": "The 8 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders."}, {"@type": "HowToStep", "name": "Download under the limit", "text": "The output is measured and re-encoded until it's provably under 8 MB, with a 6% safety margin, then downloads straight to your device."}]}
+</script>
 </head>
 <body data-preset="8">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Get exactly 8 MB in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Lock in 8 MB</h3><p>The 8 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download under the limit</h3><p>The output is measured and re-encoded until it's provably under 8 MB, with a 6% safety margin, then downloads straight to your device.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why 8 MB?</h2>
     <p>8 MB was Discord's original free upload limit — raised to 25 MB, then 10 MB, then <strong>20 MB in August 2026</strong> (<span class="verified">verified September 2026</span>). But the 8 MB cap lives on: old forum attachments, upload forms, chatbots, and countless guides still say &ldquo;must be under 8 MB&rdquo;.</p>
     <p>Be honest about what fits: 8 MB holds roughly <strong>20 seconds at 1080p, 30 seconds at 720p, or about a minute at 480p</strong>. If your clip is actually for Discord, use <a href="/compress-video-to-20mb/">20 MB</a> instead — 2.5&times; the bitrate budget for the same clip. Only target 8 MB when something explicitly demands it.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

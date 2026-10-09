@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Send it over iMessage in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your clip in", "text": "Drag and drop your video into the tool above, right in your browser. Nothing is uploaded — handy for personal clips."}, {"@type": "HowToStep", "name": "Shrink to 20 MB", "text": "The 20 MB preset is pre-selected. It sends fast over cellular and arrives looking like you intended."}, {"@type": "HowToStep", "name": "Send it", "text": "Download the result and attach it in iMessage — no more failed sends on big 4K clips."}]}
+</script>
 </head>
 <body data-preset="20">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Send it over iMessage in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your clip in</h3><p>Drag and drop your video into the tool above, right in your browser. Nothing is uploaded — handy for personal clips.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Shrink to 20 MB</h3><p>The 20 MB preset is pre-selected. It sends fast over cellular and arrives looking like you intended.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Send it</h3><p>Download the result and attach it in iMessage — no more failed sends on big 4K clips.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why iMessage struggles with big videos</h2>
     <p>Blue bubbles or green, a 500 MB 4K clip is a lot to push through a messaging pipeline. iMessage compresses on send with no say from you; fall back to SMS/MMS (green bubbles) and carrier limits crush it to a postage stamp. Starting from a <strong>right-sized file</strong> — say 20 MB — means it sends fast and arrives looking like you intended.</p>
     <p>On iPhone, do it right in Safari: no app to install, nothing uploaded. See <a href="/compress-video-for-iphone/">compress video on iPhone</a>.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

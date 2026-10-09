@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded to a server?","acceptedAnswer":{"@type":"Answer","text":"No. Compression runs on your iPhone's own chip via WebAssembly. Your video never leaves your device — which is also why it works on airplane mode after the page loads."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Compress on iPhone in 3 steps", "step": [{"@type": "HowToStep", "name": "Open it in Safari or Chrome", "text": "No app to install — the tool runs right in your mobile browser. Tap to browse your photo library or Files."}, {"@type": "HowToStep", "name": "Use the 20 MB default", "text": "20 MB is pre-selected as a safe default for sharing. VidSizer computes the exact bitrate for your clip automatically."}, {"@type": "HowToStep", "name": "Save and share", "text": "Download the compressed video to your iPhone and share it anywhere — small file, full quality control."}]}
+</script>
 </head>
 <body data-preset="20">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Compress on iPhone in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Open it in Safari or Chrome</h3><p>No app to install — the tool runs right in your mobile browser. Tap to browse your photo library or Files.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Use the 20 MB default</h3><p>20 MB is pre-selected as a safe default for sharing. VidSizer computes the exact bitrate for your clip automatically.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Save and share</h3><p>Download the compressed video to your iPhone and share it anywhere — small file, full quality control.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>How it works on iPhone</h2>
     <p>Tap <strong>browse files</strong> above and choose a video from your Photo Library. Pick a target size — 20 MB is a safe default for sharing — and hit Compress. When it's done, the MP4 downloads to your <strong>Files app</strong>, where you can save it back to Photos or share it anywhere.</p>
     <p>Two iPhone tips: keep <strong>Safari in the foreground</strong> while it encodes (iOS throttles background tabs), and plug in if the clip is long — encoding uses your phone's CPU, which is the whole reason nothing gets uploaded.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

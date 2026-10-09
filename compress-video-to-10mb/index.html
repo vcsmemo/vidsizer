@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Get exactly 10 MB in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Lock in 10 MB", "text": "The 10 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders."}, {"@type": "HowToStep", "name": "Download under the limit", "text": "The output is measured and re-encoded until it's provably under 10 MB, with a 6% safety margin, then downloads straight to your device."}]}
+</script>
 </head>
 <body data-preset="10">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Get exactly 10 MB in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Lock in 10 MB</h3><p>The 10 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download under the limit</h3><p>The output is measured and re-encoded until it's provably under 10 MB, with a 6% safety margin, then downloads straight to your device.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why 10 MB?</h2>
     <p>From 2021 until August 2026, Discord's free upload limit was 10 MB (<span class="verified">now 20 MB, verified September 2026</span>) — so a decade of guides, bots, and forum posts still say &ldquo;under 10 MB&rdquo;. Plenty of upload forms and email-adjacent workflows use 10 MB as their cap too.</p>
     <p>What fits: roughly <strong>30 seconds at 1080p or about a minute at 720p</strong> with clean quality. If your clip is actually for Discord today, <a href="/compress-video-to-20mb/">target 20 MB</a> instead and double your quality budget.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

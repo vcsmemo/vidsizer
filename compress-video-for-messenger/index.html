@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Send it on Messenger in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Target 25 MB", "text": "The 25 MB preset is pre-selected — a sensible default: light enough to send fast, heavy enough to survive one more encode on arrival."}, {"@type": "HowToStep", "name": "Send without the mush", "text": "Download the compressed video and send it in Messenger, with quality you chose instead of whatever the app decides."}]}
+</script>
 </head>
 <body data-preset="25">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Send it on Messenger in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Target 25 MB</h3><p>The 25 MB preset is pre-selected — a sensible default: light enough to send fast, heavy enough to survive one more encode on arrival.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Send without the mush</h3><p>Download the compressed video and send it in Messenger, with quality you chose instead of whatever the app decides.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why Messenger mangles your videos</h2>
     <p>Messenger aggressively re-encodes anything you send — a pristine 200 MB recording and a sloppy 30 MB one can arrive looking equally bad. The fix is counterintuitive: <strong>compress it yourself first</strong>, to a size Messenger accepts without a fight. You keep control of the quality-per-megabyte tradeoff instead of handing it to a chat app.</p>
     <p>25 MB is a sensible default: light enough to send fast, heavy enough to survive one more encode on arrival.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

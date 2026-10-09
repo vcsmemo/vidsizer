@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Get exactly 25 MB in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Lock in 25 MB", "text": "The 25 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders."}, {"@type": "HowToStep", "name": "Download under the limit", "text": "The output is measured and re-encoded until it's provably under 25 MB, with a 6% safety margin, then downloads straight to your device."}]}
+</script>
 </head>
 <body data-preset="25">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Get exactly 25 MB in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Lock in 25 MB</h3><p>The 25 MB target is pre-selected. VidSizer reads your clip's duration and computes the exact bitrate needed — no guessing with Low / Medium / High sliders.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download under the limit</h3><p>The output is measured and re-encoded until it's provably under 25 MB, with a 6% safety margin, then downloads straight to your device.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why Gmail rejects your &ldquo;25 MB&rdquo; file</h2>
     <p>Gmail's 25 MB limit counts the <em>encoded</em> attachment, not the file on your disk — so a file that reads 25.0 MB in Finder can still tip over the line and get bounced to Drive. VidSizer targets <strong>~6% under your target</strong>, so encoding overhead never pushes you over.</p>
     <p>The result arrives as a real attachment that plays inline — no &ldquo;view in Drive&rdquo; detour for your recipient. Also handy for any other inbox with a 25 MB cap. See <a href="/compress-video-for-gmail/">compress video for Gmail</a>.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

@@ -19,6 +19,9 @@
 {"@type":"Question","name":"What size should I target for Signal?","acceptedAnswer":{"@type":"Answer","text":"20 MB is a safe default that sends quickly. If Signal still resists, step down to 10 MB or 8 MB — the tool shows its planned output before encoding."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Shrink it for Signal in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in — privately", "text": "Drag and drop your clip into the tool above. Everything runs on your device, so a private video stays private — nothing is uploaded anywhere."}, {"@type": "HowToStep", "name": "Target 20 MB", "text": "The 20 MB preset is pre-selected — a safe default that sends quickly and keeps quality high."}, {"@type": "HowToStep", "name": "Share on Signal", "text": "Download the result and attach it in Signal. Your video was never uploaded anywhere, so it stays as private as the chat itself."}]}
+</script>
 </head>
 <body data-preset="20">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Shrink it for Signal in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in — privately</h3><p>Drag and drop your clip into the tool above. Everything runs on your device, so a private video stays private — nothing is uploaded anywhere.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Target 20 MB</h3><p>The 20 MB preset is pre-selected — a safe default that sends quickly and keeps quality high.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Share on Signal</h3><p>Download the result and attach it in Signal. Your video was never uploaded anywhere, so it stays as private as the chat itself.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>The private way to shrink a video</h2>
     <p>Most “compress video online” tools make you upload your footage to their servers first. If you care enough to message on Signal, that tradeoff makes no sense. VidSizer runs the encoder (FFmpeg, via WebAssembly) <strong>inside your browser tab</strong> — your video is never transmitted, stored, or seen by anyone.</p>
     <p>Signal caps attachments well below what modern phone cameras shoot, so compression is unavoidable. Do it here, then send — the private part stays private end to end.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

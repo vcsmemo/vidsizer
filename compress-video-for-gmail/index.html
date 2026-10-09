@@ -18,6 +18,9 @@
 {"@type":"Question","name":"How do I compress a video to exactly 25MB for Gmail?","acceptedAnswer":{"@type":"Answer","text":"Drop your video into VidSizer with the Gmail 25MB preset selected. It computes the exact bitrate for your clip's duration and verifies the output is under 25MB before you download it."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Attach it in Gmail in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Target 25 MB", "text": "The 25 MB preset is pre-selected. With the 6% safety margin the file lands around 24 MB — safely inside Gmail's real encoded-attachment limit."}, {"@type": "HowToStep", "name": "Send a real attachment", "text": "Download the video and attach it normally. It arrives inline and plays in the inbox — no 'view in Drive' detour for your recipient."}]}
+</script>
 </head>
 <body data-preset="25">
 <header class="site-header">
@@ -85,7 +88,15 @@
     </div>
   </section>
 
-  <section class="section">
+    <section class="section">
+    <h2>Attach it in Gmail in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Target 25 MB</h3><p>The 25 MB preset is pre-selected. With the 6% safety margin the file lands around 24 MB — safely inside Gmail's real encoded-attachment limit.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Send a real attachment</h3><p>Download the video and attach it normally. It arrives inline and plays in the inbox — no 'view in Drive' detour for your recipient.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why 25 MB?</h2>
     <p>Gmail allows <strong>25 MB total per email</strong> — message text, other attachments, and encoding overhead all count. Go even slightly over and Gmail silently converts your attachment into a Google Drive link, which many recipients never open (or can't, behind corporate firewalls).</p>
     <p>Targeting ~24 MB with VidSizer's 6% safety margin keeps you safely inside the real-world limit, so your video arrives as an actual attachment that plays inline.</p>
@@ -102,6 +113,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Is my video uploaded anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. Everything runs in your browser via WebAssembly. No upload, no account, no watermark."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Shrink it for Telegram in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your video in", "text": "Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Hit 50 MB", "text": "The 50 MB preset is pre-selected. A 50 MB clip sends in seconds on mobile data and looks identical on a phone screen."}, {"@type": "HowToStep", "name": "Send it", "text": "Download the compressed file and share it in any chat or channel — fast upload, no quality surprises."}]}
+</script>
 </head>
 <body data-preset="50">
 <header class="site-header">
@@ -87,7 +90,15 @@
   </section>
 
 
-  <section class="section">
+    <section class="section">
+    <h2>Shrink it for Telegram in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your video in</h3><p>Drag and drop any MP4, MOV or WebM file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Hit 50 MB</h3><p>The 50 MB preset is pre-selected. A 50 MB clip sends in seconds on mobile data and looks identical on a phone screen.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Send it</h3><p>Download the compressed file and share it in any chat or channel — fast upload, no quality surprises.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Why compress before sending on Telegram?</h2>
     <p>Telegram's file limit is generous (2 GB for free accounts), so compression here isn't about dodging a cap — it's about speed. A 300 MB screen recording takes forever to upload on mobile data; the same clip at 50 MB sends in seconds and looks identical on a phone screen. And if you're sending through a <strong>Telegram bot, 50 MB is the number to beat</strong> — that's why it's the default target on this page.</p>
     <p>One more thing: Telegram re-encodes videos sent as &ldquo;video&rdquo;. Send your compressed file as a <strong>document</strong> instead and it arrives exactly as you encoded it — byte for byte under your target.</p>
@@ -105,6 +116,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

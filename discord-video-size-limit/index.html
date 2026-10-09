@@ -19,6 +19,9 @@
 {"@type":"Question","name":"Does video length matter for the Discord limit?","acceptedAnswer":{"@type":"Answer","text":"Only indirectly. Discord checks file size, not duration. A short 4K clip can exceed 20MB while a long 480p clip fits — what matters is megabytes."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Fit any video under your limit in 3 steps", "step": [{"@type": "HowToStep", "name": "Find your plan's limit", "text": "Free accounts get 20 MB, Nitro Basic 50 MB, Nitro 500 MB. The 20 MB preset is pre-selected in the tool above."}, {"@type": "HowToStep", "name": "Shrink your video to fit", "text": "Drop your clip in — it never leaves your browser. VidSizer computes the exact bitrate to land just under your limit, with a 6% safety margin."}, {"@type": "HowToStep", "name": "Upload with confidence", "text": "Download the verified file and attach it on Discord. It fits, so it sends on the first try."}]}
+</script>
 </head>
 <body data-preset="20">
 <header class="site-header">
@@ -36,7 +39,15 @@
     <p class="lede">The numbers changed in August 2026 — and most of the internet hasn't caught up. Here are the limits that actually apply right now.</p>
   </section>
 
-  <section class="section">
+    <section class="section">
+    <h2>Fit any video under your limit in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Find your plan's limit</h3><p>Free accounts get 20 MB, Nitro Basic 50 MB, Nitro 500 MB. The 20 MB preset is pre-selected in the tool above.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Shrink your video to fit</h3><p>Drop your clip in — it never leaves your browser. VidSizer computes the exact bitrate to land just under your limit, with a 6% safety margin.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Upload with confidence</h3><p>Download the verified file and attach it on Discord. It fits, so it sends on the first try.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>Current limits by plan</h2>
     <table class="limits">
       <tr><th>Plan</th><th>Max attachment size</th><th>Monthly cost</th></tr>
@@ -130,6 +141,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>

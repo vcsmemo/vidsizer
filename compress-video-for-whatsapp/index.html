@@ -18,6 +18,9 @@
 {"@type":"Question","name":"How do I compress a video to exactly 16MB for WhatsApp?","acceptedAnswer":{"@type":"Answer","text":"Drop your video into VidSizer with the WhatsApp 16MB preset selected. It computes the exact bitrate for your clip's duration and verifies the output is under 16MB before you download it."}}
 ]}
 </script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Send it on WhatsApp in 3 steps", "step": [{"@type": "HowToStep", "name": "Shrink to 16 MB", "text": "The 16 MB WhatsApp preset is pre-selected — small enough to send fast on mobile data, big enough for good-looking short clips."}, {"@type": "HowToStep", "name": "Drop your video in — privately", "text": "Drag and drop your clip into the tool above. Everything runs on your device, so a private video stays private — nothing is uploaded anywhere."}, {"@type": "HowToStep", "name": "Attach as a document", "text": "Download the result and send it via Attach → Document in WhatsApp. Documents aren't re-compressed, so your recipient gets the exact quality you chose."}]}
+</script>
 </head>
 <body data-preset="16">
 <header class="site-header">
@@ -85,7 +88,15 @@
     </div>
   </section>
 
-  <section class="section">
+    <section class="section">
+    <h2>Send it on WhatsApp in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Shrink to 16 MB</h3><p>The 16 MB WhatsApp preset is pre-selected — small enough to send fast on mobile data, big enough for good-looking short clips.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Drop your video in — privately</h3><p>Drag and drop your clip into the tool above. Everything runs on your device, so a private video stays private — nothing is uploaded anywhere.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Attach as a document</h3><p>Download the result and send it via Attach → Document in WhatsApp. Documents aren't re-compressed, so your recipient gets the exact quality you chose.</p></div>
+    </div>
+  </section>
+<section class="section">
     <h2>The 16 MB trick, explained</h2>
     <p>WhatsApp technically allows large documents — but when you send a video the normal way (as <em>media</em>), WhatsApp re-compresses it aggressively and it comes out blurry. The workaround power users know: <strong>send it as a document</strong> (attach → Document → choose video). Documents aren't re-compressed.</p>
     <p>16 MB is the sweet spot: small enough to send and download quickly on mobile data, large enough for good-looking short clips. Compress to exactly 16 MB above, then attach the result as a document — your recipient gets the file untouched, at the quality <em>you</em> chose.</p>
@@ -102,6 +113,7 @@
   <div class="footer-inner">
     <nav>
       <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
       <a href="/discord-video-compressor/">Discord video compressor</a>
       <a href="/compress-video-for-discord/">Compress video for Discord</a>
       <a href="/discord-video-size-limit/">Discord video size limit</a>
