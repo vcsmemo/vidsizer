@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap');
+/* Self-hosted Baloo 2 (GDPR: no request to Google Fonts). Files in /fonts/. */
+@font-face { font-family: 'Baloo 2'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/baloo2-600.woff2') format('woff2'); }
+@font-face { font-family: 'Baloo 2'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/baloo2-700.woff2') format('woff2'); }
+@font-face { font-family: 'Baloo 2'; font-style: normal; font-weight: 800; font-display: swap; src: url('/fonts/baloo2-800.woff2') format('woff2'); }
 
 /* VidSizer — warm sticker-book design. Cream paper, ink borders, hard shadows. */
 :root {
