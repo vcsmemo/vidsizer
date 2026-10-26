@@ -66,6 +66,13 @@ let vidWidth = 0;
 let vidHeight = 0;
 let targetMB = 20;
 let busy = false;
+// Page-scoped tool modes, set from the tool section's data-mode in init().
+// No data-mode = classic exact-size compressor (homepage + all size/platform
+// pages, behavior unchanged). 'convert' = re-encode to MP4 even when the file
+// is already under target (conversion pages must not hand back the original
+// MOV/WebM/MKV). 'audio' = extract the audio track as 192k MP3 (video-to-mp3).
+let AUDIO_MODE = false;
+let CONVERT_MODE = false;
 
 // FFmpeg wrapper library is loaded lazily (dynamic import) so a blocked CDN
 // can never kill the whole UI. See LIB_URLS / CORE_BASES above.
@@ -104,6 +111,8 @@ function init() {
   const tool = $('tool');
   if (!tool) return;
   targetMB = parseFloat(tool.dataset.preset || '20') || 20;
+  AUDIO_MODE = tool.dataset.mode === 'audio';
+  CONVERT_MODE = tool.dataset.mode === 'convert';
 
   const dropzone = $('dropzone');
   const fileInput = $('fileInput');
@@ -153,7 +162,8 @@ function init() {
       });
     }
   });
-  $('customMB').addEventListener('input', readCustom);
+  const customMBEl = $('customMB');
+  if (customMBEl) customMBEl.addEventListener('input', readCustom);
 
   // If the page preset isn't one of the chips (e.g. /compress-video-to-8mb/),
   // default to the Custom chip prefilled with the page's target size.
@@ -284,6 +294,18 @@ function computePlan() {
 
 function updateEstimate() {
   if (!file || !durationSec) return;
+  if (AUDIO_MODE) {
+    // Audio extraction has no size target: show the estimated MP3 size
+    // (duration × 192 kbps) and skip the size-plan warnings entirely.
+    $('estOrig').textContent = fmtMB(file.size);
+    $('estOut').textContent = '≈ ' + fmtMB(durationSec * 192000 / 8);
+    $('estPlan').textContent = '192 kbps MP3 audio';
+    $('estimate').hidden = false;
+    $('qualityWarn').hidden = true;
+    $('bigFileNote').hidden = file.size <= 200 * 1024 * 1024;
+    $('compressBtn').textContent = 'Extract MP3';
+    return;
+  }
   const plan = computePlan();
   $('estOrig').textContent = fmtMB(file.size);
   const alreadyUnder = file.size <= plan.targetBytes;
@@ -292,7 +314,9 @@ function updateEstimate() {
     $('estPlan').textContent = '';
   } else if (alreadyUnder) {
     $('estOut').textContent = fmtMB(file.size);
-    $('estPlan').textContent = 'already under target — no re-encode needed';
+    $('estPlan').textContent = CONVERT_MODE
+      ? 'already under budget — will still re-encode to MP4'
+      : 'already under target — no re-encode needed';
   } else {
     $('estOut').textContent = '≈ ' + (targetMB * SAFETY_MARGIN).toFixed(1) + ' MB';
     $('estPlan').textContent = plan.outH + 'p · ' + (plan.videoBr / 1e6).toFixed(1) +
@@ -319,7 +343,8 @@ function updateEstimate() {
   // and can exhaust memory on phones.
   $('bigFileNote').hidden = file.size <= 200 * 1024 * 1024;
   // Keep the button caption in sync with the chosen target (incl. Custom).
-  $('compressBtn').textContent = 'Compress to ' + targetMB + ' MB';
+  // Convert pages keep their own label: the target is a quality budget there.
+  if (!CONVERT_MODE) $('compressBtn').textContent = 'Compress to ' + targetMB + ' MB';
 }
 
 function nextPresetAbove(t) {
@@ -437,10 +462,10 @@ async function compress() {
   setProgress(2, 'Loading encoder… (first run downloads ~30 MB, then it\'s cached)');
 
   try {
-    const plan = computePlan();
+    const plan = AUDIO_MODE ? null : computePlan();
 
     // Fail fast on impossible targets — before downloading the encoder.
-    if (plan.impossible) {
+    if (plan && plan.impossible) {
       showError(`This video can't fit in ${targetMB} MB — even at minimum quality it needs ≈ ${plan.minMB} MB. ` +
         'Try a larger target size or trim the video shorter.');
       $('compressBtn').disabled = false;
@@ -448,7 +473,9 @@ async function compress() {
     }
 
     // Already under target: no re-encode, no quality loss, instant.
-    if (file.size <= plan.targetBytes) {
+    // Convert pages skip this: handing back the original file would defeat
+    // the conversion (user would get their MOV/WebM/MKV back unchanged).
+    if (plan && file.size <= plan.targetBytes && !CONVERT_MODE) {
       const dl = $('downloadBtn');
       dl.href = objectURL;
       dl.download = file.name || 'video.mp4';
@@ -466,7 +493,7 @@ async function compress() {
       ? file.name.slice(file.name.lastIndexOf('.')).toLowerCase()
       : '.mp4';
     const inName = 'input' + (/\.(mp4|mov|m4v|webm|mkv|avi)$/i.test(ext) ? ext : '.mp4');
-    const outName = 'output.mp4';
+    const outName = AUDIO_MODE ? 'output.mp3' : 'output.mp4';
 
     await inst.writeFile(inName, await fetchFileLocal(file));
 
@@ -474,44 +501,58 @@ async function compress() {
     inst.on('progress', ({ time }) => {
       if (durationSec > 0) {
         const pct = Math.min(99, Math.round(((time || 0) / 1e6 / durationSec) * 100));
-        setProgress(pct, 'Compressing…');
+        setProgress(pct, AUDIO_MODE ? 'Extracting audio…' : 'Compressing…');
       }
     });
 
-    let videoBr = plan.videoBr;
     let outData = null;
-    let attempt;
-    for (attempt = 1; attempt <= 2; attempt++) {
-      $('attemptText').textContent = 'Pass ' + attempt + ' of up to 2 — targeting under ' + targetMB + ' MB' +
-        (mtActive ? ' · multi-threaded' : '');
-      setProgress(3, 'Compressing…');
-      await inst.exec(buildArgs(inName, outName, { ...plan, videoBr }));
+    if (AUDIO_MODE) {
+      // Single pass: drop the video stream, encode the audio as 192k MP3.
+      $('attemptText').textContent = 'Extracting audio…';
+      setProgress(3, 'Extracting audio…');
+      await inst.exec(['-y', '-i', inName, '-vn', '-c:a', 'libmp3lame', '-b:a', '192k', outName]);
       outData = await inst.readFile(outName);
-      if (outData.length <= plan.targetBytes) break;
-      // Overshot: scale bitrate down proportionally with a safety factor and retry once
-      videoBr = Math.max(ABS_MIN_VIDEO_BR,
-        Math.floor(videoBr * (plan.targetBytes / outData.length) * 0.97));
+    } else {
+      let videoBr = plan.videoBr;
+      let attempt;
+      for (attempt = 1; attempt <= 2; attempt++) {
+        $('attemptText').textContent = CONVERT_MODE
+          ? 'Pass ' + attempt + ' of up to 2 — converting to MP4' + (mtActive ? ' · multi-threaded' : '')
+          : 'Pass ' + attempt + ' of up to 2 — targeting under ' + targetMB + ' MB' +
+            (mtActive ? ' · multi-threaded' : '');
+        setProgress(3, 'Compressing…');
+        await inst.exec(buildArgs(inName, outName, { ...plan, videoBr }));
+        outData = await inst.readFile(outName);
+        if (outData.length <= plan.targetBytes) break;
+        // Overshot: scale bitrate down proportionally with a safety factor and retry once
+        videoBr = Math.max(ABS_MIN_VIDEO_BR,
+          Math.floor(videoBr * (plan.targetBytes / outData.length) * 0.97));
+      }
     }
 
     await inst.deleteFile(inName).catch(() => {});
     await inst.deleteFile(outName).catch(() => {});
 
     if (!outData || outData.length === 0) throw new Error('encode-failed');
-    if (outData.length > plan.targetBytes) {
+    if (!AUDIO_MODE && outData.length > plan.targetBytes) {
       showError('We couldn\'t get this clip under ' + targetMB + ' MB after 2 passes. Try a larger target size or trim the video shorter.');
       return;
     }
 
     // Money shot
-    const blob = new Blob([outData], { type: 'video/mp4' });
+    const blob = new Blob([outData], { type: AUDIO_MODE ? 'audio/mpeg' : 'video/mp4' });
     const url = URL.createObjectURL(blob);
     const dl = $('downloadBtn');
     const base = (file.name || 'video').replace(/\.[^.]+$/, '') || 'video';
     dl.href = url;
-    dl.download = base + '-' + targetMB + 'mb.mp4';
+    dl.download = AUDIO_MODE ? base + '.mp3' : base + '-' + targetMB + 'mb.mp4';
     $('resOrig').textContent = fmtMB(file.size);
     $('resOut').textContent = fmtMB(outData.length);
-    $('resTarget').textContent = targetMB;
+    if (AUDIO_MODE) {
+      document.querySelector('.under').textContent = '✓ MP3 audio extracted';
+    } else {
+      $('resTarget').textContent = targetMB;
+    }
     $('progressWrap').hidden = true;
     $('result').hidden = false;
     $('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -559,7 +600,7 @@ function resetTool() {
   $('progressWrap').hidden = true;
   hideError();
   $('compressBtn').disabled = true;
-  $('compressBtn').textContent = 'Compress';
+  $('compressBtn').textContent = AUDIO_MODE ? 'Extract MP3' : CONVERT_MODE ? 'Convert to MP4' : 'Compress';
 }
 
 document.addEventListener('DOMContentLoaded', init);

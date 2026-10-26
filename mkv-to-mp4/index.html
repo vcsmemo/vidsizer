@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convert MKV to MP4 — Free, In Your Browser, No Upload</title>
+<meta name="description" content="Convert MKV to MP4 free in your browser. OBS recordings and downloads become MP4 files that play on phones and upload anywhere. No upload, no signup, no watermark.">
+<link rel="canonical" href="https://vidsizer.com/mkv-to-mp4/">
+<meta property="og:title" content="Convert MKV to MP4 — free, private, in your browser">
+<meta property="og:description" content="Drop an MKV file in, get an MP4 back. Free, in your browser.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsizer.com/mkv-to-mp4/">
+<link rel="icon" type="image/png" href="/icon-512.png">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Do subtitles and extra audio tracks carry over?", "acceptedAnswer": {"@type": "Answer", "text": "No — this converts the main video and audio track. Extra tracks and subtitles are dropped. Keep the MKV as your archive and use the MP4 for sharing."}}, {"@type": "Question", "name": "Will converting MKV to MP4 lose quality?", "acceptedAnswer": {"@type": "Answer", "text": "Barely, at the default 500 MB budget: the video is re-encoded with a generous bitrate, so the result is visually near-identical to the original."}}, {"@type": "Question", "name": "Is my video uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. Everything runs in your browser. No upload, no account, no watermark."}}]}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "HowTo", "name": "Convert MKV to MP4 in 3 steps", "step": [{"@type": "HowToStep", "name": "Drop your MKV file in", "text": "Drag and drop any MKV file into the tool above. It never leaves your browser — no upload, no queue, no account."}, {"@type": "HowToStep", "name": "Convert to MP4", "text": "The tool re-encodes to MP4 at a generous 500 MB quality budget — or pick an exact smaller size if you also need the file under a limit."}, {"@type": "HowToStep", "name": "Download your MP4", "text": "The MP4 downloads straight to your device, with faststart enabled so it plays and uploads cleanly."}]}
+</script>
+</head>
+<body data-preset="500">
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Vid<span>Sizer</span></a>
+    <div class="nav-links">
+      <a href="/discord-video-size-limit/">Size limits</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">Free &middot; No signup &middot; No watermark</span>
+    <h1>Convert MKV to MP4</h1>
+    <p class="lede">MKV is the favorite container of OBS, HandBrake, and downloaders — flexible, but phones and social platforms don't speak it. Convert to <strong>MP4 (H.264 + AAC)</strong> here, and shrink to an exact size in the same pass if you need to.</p>
+  </section>
+
+<section class="tool" id="tool" data-preset="500" data-mode="convert" aria-label="Convert MKV to MP4 tool">
+    <div class="tool-card">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Drop a video file here or click to browse">
+        <input type="file" id="fileInput" accept="video/*" hidden>
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="drop-title">Drop your video here</p>
+        <p class="drop-sub">or <button type="button" class="link-btn" id="browseBtn">browse files</button></p>
+        <p class="drop-note">MKV files &mdash; processed 100% on your device</p>
+      </div>
+      <div class="file-info" id="fileInfo" hidden>
+        <div class="file-row"><span id="fileName"></span><button class="remove-btn" id="removeFile" aria-label="Remove file">&times;</button></div>
+        <div class="file-meta"><span id="metaDuration"></span> &middot; <span id="metaDims"></span> &middot; <span id="metaSize"></span></div>
+      </div>
+      <div class="presets">
+        <p class="presets-label">Target size</p>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" data-target="20">Discord &middot; 20 MB</button>
+          <button type="button" class="chip" data-target="50">Nitro Basic &middot; 50 MB</button>
+          <button type="button" class="chip" data-target="500">Nitro &middot; 500 MB</button>
+          <button type="button" class="chip" data-target="16">WhatsApp &middot; 16 MB</button>
+          <button type="button" class="chip" data-target="25">Gmail &middot; 25 MB</button>
+          <button type="button" class="chip" id="customChip">Custom&hellip;</button>
+        </div>
+        <div class="custom-row" id="customRow" hidden>
+          <input type="number" id="customMB" min="1" max="2000" placeholder="35" inputmode="numeric" aria-label="Custom target size in MB"> <span>MB</span>
+        </div>
+      </div>
+      <div class="estimate" id="estimate" hidden>
+        Original: <b id="estOrig"></b> &rarr; Estimated output: <b id="estOut"></b>
+        <span style="color:var(--muted);font-size:.85rem">(6% safety margin keeps you under the limit)</span><br>
+        <span style="color:var(--muted);font-size:.85rem">Planned output: <b id="estPlan"></b></span>
+        <p class="warn" id="qualityWarn" hidden></p>
+        <p class="info-note" id="bigFileNote" hidden>ð¦ Large file: encoding several hundred MB in your browser can take a very long time, and phones may run out of memory. Desktop Chrome recommended.</p>
+      </div>
+      <button class="cta" id="compressBtn" disabled>Convert to MP4</button>
+      <div class="progress" id="progressWrap" hidden>
+        <div class="bar"><div id="progressBar"></div></div>
+        <p id="progressText">Loading encoder&hellip;</p>
+        <p id="attemptText"></p>
+      </div>
+      <div class="result" id="result" hidden>
+        <p class="money">Original: <b id="resOrig"></b> &rarr; Output: <b id="resOut"></b><br><span class="under">&#10003; under your <span id="resTarget"></span> MB limit</span></p>
+        <a class="cta" id="downloadBtn" href="#" download>Download video</a><br>
+        <button class="ghost" id="againBtn">Compress another</button>
+      </div>
+      <div class="error" id="errorBox" hidden></div>
+      <p class="privacy">&#128274; Your video never leaves your device. No upload, no signup, no watermark.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Convert MKV to MP4 in 3 steps</h2>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span><h3>Drop your MKV file in</h3><p>Drag and drop any MKV file into the tool above. It never leaves your browser — no upload, no queue, no account.</p></div>
+      <div class="step"><span class="step-num">2</span><h3>Convert to MP4</h3><p>The tool re-encodes to MP4 at a generous 500 MB quality budget — or pick an exact smaller size if you also need the file under a limit.</p></div>
+      <div class="step"><span class="step-num">3</span><h3>Download your MP4</h3><p>The MP4 downloads straight to your device, with faststart enabled so it plays and uploads cleanly.</p></div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Why convert MKV to MP4?</h2>
+    <p>MKV can hold almost anything — multiple audio tracks, subtitles, chapters — which is why recording and ripping tools love it. That flexibility is exactly why players and platforms don't: phones, editors, and upload forms expect the simpler MP4 container.</p>
+    <p>MP4 with H.264 video and AAC audio plays on every phone, every browser, and every platform. Converting is the price of leaving the desktop video world.</p>
+    <p>One honest limitation: this converts the main video and audio track. Extra audio tracks and subtitle tracks don't carry over — if you need those, keep the MKV as your archive and use the MP4 for sharing.</p>
+  </section>
+  <section class="section">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>Do subtitles and extra audio tracks carry over?</summary><p>No — this converts the main video and audio track. Extra tracks and subtitles are dropped. Keep the MKV as your archive and use the MP4 for sharing.</p></details>
+    <details class="faq"><summary>Will converting MKV to MP4 lose quality?</summary><p>Barely, at the default 500 MB budget: the video is re-encoded with a generous bitrate, so the result is visually near-identical to the original.</p></details>
+    <details class="faq"><summary>Is my video uploaded anywhere?</summary><p>No. Everything runs in your browser. No upload, no account, no watermark.</p></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
+      <a href="/discord-video-compressor/">Discord video compressor</a>
+      <a href="/compress-video-for-discord/">Compress video for Discord</a>
+      <a href="/discord-video-size-limit/">Discord video size limit</a>
+      <a href="/compress-video-to-8mb/">8 MB</a>
+      <a href="/compress-video-to-10mb/">10 MB</a>
+      <a href="/compress-video-to-16mb/">16 MB</a>
+      <a href="/compress-video-to-20mb/">20 MB</a>
+      <a href="/compress-video-to-25mb/">25 MB</a>
+      <a href="/compress-video-to-50mb/">50 MB</a>
+      <a href="/compress-video-to-100mb/">100 MB</a>
+      <a href="/compress-video-to-200mb/">200 MB</a>
+      <a href="/compress-video-to-500mb/">500 MB</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-telegram/">Telegram</a>
+      <a href="/compress-video-for-slack/">Slack</a>
+      <a href="/compress-video-for-signal/">Signal</a>
+      <a href="/compress-video-for-messenger/">Messenger</a>
+      <a href="/compress-video-for-imessage/">iMessage</a>
+      <a href="/compress-video-for-reddit/">Reddit</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/compress-video-for-iphone/">iPhone</a>
+      <a href="/compress-video-for-android/">Android</a>
+      <a href="/mov-to-mp4/">MOV to MP4</a>
+      <a href="/webm-to-mp4/">WebM to MP4</a>
+      <a href="/mkv-to-mp4/">MKV to MP4</a>
+      <a href="/video-to-mp3/">Video to MP3</a>
+      <a href="/guides/how-to-compress-video-for-discord/">How to compress for Discord</a>
+      <a href="/guides/how-to-compress-video-for-email/">How to compress for email</a>
+      <a href="/guides/how-to-reduce-video-file-size/">How to reduce video size</a>
+      <a href="/guides/how-to-convert-mov-to-mp4/">How to convert MOV to MP4</a>
+    </nav>
+    <p>VidSizer &mdash; compress any video to any exact size, free, in your browser. Your videos never leave your device.</p>
+  </div>
+</footer>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

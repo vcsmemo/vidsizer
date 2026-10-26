@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Reduce Video File Size (Without Ruining Quality)</title>
+<meta name="description" content="Video size is bitrate × duration. Three levers actually work: resolution, bitrate, and length. Here's how to use them — free in your browser.">
+<link rel="canonical" href="https://vidsizer.com/guides/how-to-reduce-video-file-size/">
+<meta property="og:title" content="How to reduce video file size">
+<meta property="og:description" content="Size ≈ bitrate × duration. Three levers actually work — here they are.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vidsizer.com/guides/how-to-reduce-video-file-size/">
+<link rel="icon" type="image/png" href="/icon-512.png">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "Article", "headline": "How to reduce video file size", "description": "Video size is bitrate × duration. Three levers actually work: resolution, bitrate, and length. Here's how to use them — free in your browser.", "mainEntityOfPage": "https://vidsizer.com/guides/how-to-reduce-video-file-size/"}
+</script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does compressing reduce quality?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the math. A 30-second clip at 20 MB looks great; a 20-minute clip at 20 MB cannot. If the target is unrealistic for the length, trim the clip or pick a bigger target."}}, {"@type": "Question", "name": "What's the best format for small files?", "acceptedAnswer": {"@type": "Answer", "text": "MP4 with H.264 video and AAC audio — the universal choice. Newer codecs (H.265, AV1) compress better but don't play everywhere yet."}}]}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Vid<span>Sizer</span></a>
+    <div class="nav-links">
+      <a href="/discord-video-size-limit/">Size limits</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <span class="eyebrow">Guide &middot; Free &middot; No signup</span>
+    <h1>How to reduce video file size</h1>
+    <p class="lede">Every "reduce video size" trick boils down to one equation: <strong>size ≈ bitrate × duration</strong>. Change one of the three inputs and the size follows.</p>
+    <p style="color:var(--muted);font-size:.9rem">Last updated: October 2026</p>
+  </section>
+
+  <section class="section">
+    <h2>The one equation</h2>
+    <p>A video file is mostly its video bitrate times its duration, plus a smaller audio share. So there are exactly three levers: lower the bitrate, lower the resolution (which lets a lower bitrate still look good), or shorten the clip.</p>
+    <p>Any tool that promises otherwise is selling something. "AI compression" still moves one of these three numbers.</p>
+  </section>
+  <section class="section">
+    <h2>Lever 1: Resolution</h2>
+    <p>Dropping 1080p to 720p roughly halves the pixels the encoder must describe — so the same bitrate looks much better, or a lower bitrate looks the same. This is why good compressors step down the resolution ladder (1080p → 720p → 480p) instead of starving a 4K frame with a tiny bitrate.</p>
+    <p>For phone screens and chat apps, 720p is usually indistinguishable from 1080p. For a TV, it isn't — pick the ladder rung for the screen it will be watched on.</p>
+  </section>
+  <section class="section">
+    <h2>Lever 2: Bitrate — exact beats preset</h2>
+    <p>Most tools offer Low / Medium / High and hope the output fits. That is backwards: the platform cares about megabytes, not your quality setting. Start from the number that matters — <a href="/compress-video-to-20mb/">20 MB</a>, <a href="/compress-video-to-50mb/">50 MB</a>, any exact size — and solve for the bitrate that fits it.</p>
+  </section>
+  <section class="section">
+    <h2>Lever 3: Length</h2>
+    <p>The most underused lever. Cutting 30 dead seconds off a clip saves more size than any quality tweak, with zero quality loss. Trim first, compress second.</p>
+    <p>And one warning: don't re-compress an already-compressed file repeatedly. Each pass throws away detail you can't get back. Compress once, from the original.</p>
+  </section>
+
+  <section class="section">
+    <div class="tool-card" style="text-align:center;padding:2rem">
+      <h2>Try the exact-size compressor</h2>
+      <p>Free, in your browser. Your video never leaves your device.</p>
+      <p><a class="cta" href="/">Compress to any exact size — free</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>FAQ</h2>
+    <details class="faq"><summary>Does compressing reduce quality?</summary><p>It depends on the math. A 30-second clip at 20 MB looks great; a 20-minute clip at 20 MB cannot. If the target is unrealistic for the length, trim the clip or pick a bigger target.</p></details>
+    <details class="faq"><summary>What's the best format for small files?</summary><p>MP4 with H.264 video and AAC audio — the universal choice. Newer codecs (H.265, AV1) compress better but don't play everywhere yet.</p></details>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/compare-video-compressors/">Compare compressors</a>
+      <a href="/discord-video-compressor/">Discord video compressor</a>
+      <a href="/compress-video-for-discord/">Compress video for Discord</a>
+      <a href="/discord-video-size-limit/">Discord video size limit</a>
+      <a href="/compress-video-to-8mb/">8 MB</a>
+      <a href="/compress-video-to-10mb/">10 MB</a>
+      <a href="/compress-video-to-16mb/">16 MB</a>
+      <a href="/compress-video-to-20mb/">20 MB</a>
+      <a href="/compress-video-to-25mb/">25 MB</a>
+      <a href="/compress-video-to-50mb/">50 MB</a>
+      <a href="/compress-video-to-100mb/">100 MB</a>
+      <a href="/compress-video-to-200mb/">200 MB</a>
+      <a href="/compress-video-to-500mb/">500 MB</a>
+      <a href="/compress-video-for-whatsapp/">WhatsApp</a>
+      <a href="/compress-video-for-telegram/">Telegram</a>
+      <a href="/compress-video-for-slack/">Slack</a>
+      <a href="/compress-video-for-signal/">Signal</a>
+      <a href="/compress-video-for-messenger/">Messenger</a>
+      <a href="/compress-video-for-imessage/">iMessage</a>
+      <a href="/compress-video-for-reddit/">Reddit</a>
+      <a href="/compress-video-for-gmail/">Gmail</a>
+      <a href="/compress-video-for-iphone/">iPhone</a>
+      <a href="/compress-video-for-android/">Android</a>
+      <a href="/mov-to-mp4/">MOV to MP4</a>
+      <a href="/webm-to-mp4/">WebM to MP4</a>
+      <a href="/mkv-to-mp4/">MKV to MP4</a>
+      <a href="/video-to-mp3/">Video to MP3</a>
+      <a href="/guides/how-to-compress-video-for-discord/">How to compress for Discord</a>
+      <a href="/guides/how-to-compress-video-for-email/">How to compress for email</a>
+      <a href="/guides/how-to-reduce-video-file-size/">How to reduce video size</a>
+      <a href="/guides/how-to-convert-mov-to-mp4/">How to convert MOV to MP4</a>
+    </nav>
+    <p>VidSizer &mdash; compress any video to any exact size, free, in your browser. Your videos never leave your device.</p>
+  </div>
+</footer>
+</body>
+</html>
